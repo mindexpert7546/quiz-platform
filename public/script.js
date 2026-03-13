@@ -161,7 +161,7 @@ document.getElementById("questionContainer").innerHTML = html
 updateProgressBar()
 
 restoreAnswerState()
-
+updateButtons()
 }
 
 
@@ -424,6 +424,31 @@ y = 20
 })
 
 doc.save("quiz-report.pdf")
+
+}
+
+function updateButtons(){
+
+const prevBtn = document.getElementById("prevBtn")
+const nextBtn = document.getElementById("nextBtn")
+
+// disable previous if first question
+if(currentQuestion === 0){
+prevBtn.disabled = true
+prevBtn.style.opacity = "0.5"
+}else{
+prevBtn.disabled = false
+prevBtn.style.opacity = "1"
+}
+
+// disable next if last question
+if(currentQuestion === quizData.questions.length - 1){
+nextBtn.disabled = true
+nextBtn.style.opacity = "0.5"
+}else{
+nextBtn.disabled = false
+nextBtn.style.opacity = "1"
+}
 
 }
 

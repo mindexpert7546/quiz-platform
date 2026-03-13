@@ -9,7 +9,6 @@
 <title>Take Quiz</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -20,9 +19,10 @@ font-family:Arial, Helvetica, sans-serif;
 /* BACKGROUND */
 
 body{
-background:linear-gradient(135deg,#1c0038,#3c0b6e);
+background:linear-gradient(135deg,#120024,#3b0071,#180032);
 color:white;
 min-height:100vh;
+overflow-x:hidden;
 }
 
 /* NAVBAR */
@@ -32,11 +32,17 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 8%;
+position:sticky;
+top:0;
+background:rgba(0,0,0,0.25);
+backdrop-filter:blur(10px);
+z-index:1000;
 }
 
 .logo{
 font-size:22px;
-font-weight:bold;
+font-weight:600;
+letter-spacing:1px;
 }
 
 .menu{
@@ -48,7 +54,7 @@ gap:30px;
 text-decoration:none;
 color:white;
 font-weight:500;
-transition:.3s;
+transition:0.3s;
 }
 
 .menu a:hover{
@@ -57,7 +63,7 @@ color:#00e5ff;
 
 .hamburger{
 display:none;
-font-size:25px;
+font-size:28px;
 cursor:pointer;
 }
 
@@ -67,25 +73,26 @@ cursor:pointer;
 display:flex;
 justify-content:center;
 align-items:center;
-padding:40px 20px;
+padding:60px 20px;
 }
 
 /* QUIZ CARD */
 
 .quiz-box{
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(10px);
-padding:35px;
-border-radius:12px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+padding:40px;
+border-radius:16px;
 width:100%;
 max-width:700px;
-box-shadow:0 10px 30px rgba(0,0,0,0.3);
+box-shadow:0 15px 40px rgba(0,0,0,0.35);
 }
 
 /* TITLES */
 
 #quizTitle{
 margin-bottom:10px;
+font-size:26px;
 }
 
 #creatorInfo{
@@ -104,8 +111,8 @@ font-weight:bold;
 
 .progress-bar{
 width:100%;
-height:8px;
-background:#444;
+height:10px;
+background:#333;
 border-radius:20px;
 margin-bottom:20px;
 overflow:hidden;
@@ -115,29 +122,30 @@ overflow:hidden;
 height:100%;
 width:0%;
 background:#00e5ff;
-transition:.3s;
+transition:0.4s;
 }
 
 /* QUESTION */
 
 #questionContainer h3{
-margin-bottom:15px;
+margin-bottom:18px;
 }
 
 /* OPTIONS */
 
 .option{
 display:block;
-padding:12px;
-margin-bottom:10px;
-border-radius:6px;
+padding:14px;
+margin-bottom:12px;
+border-radius:8px;
 background:rgba(255,255,255,0.15);
 cursor:pointer;
-transition:.2s;
+transition:0.25s;
 }
 
 .option:hover{
 background:rgba(255,255,255,0.25);
+transform:translateX(3px);
 }
 
 /* CORRECT / WRONG */
@@ -158,24 +166,26 @@ pointer-events:none;
 /* BUTTONS */
 
 .controls{
-margin-top:20px;
+margin-top:25px;
 display:flex;
-gap:10px;
+gap:12px;
 flex-wrap:wrap;
 }
 
 .controls button{
 background:#00c853;
 border:none;
-padding:10px 20px;
+padding:12px 22px;
 color:white;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
-transition:.2s;
+transition:0.25s;
+font-size:15px;
 }
 
 .controls button:hover{
 background:#00b34a;
+transform:translateY(-1px);
 }
 
 /* RESULT */
@@ -191,12 +201,12 @@ font-size:18px;
 margin-top:30px;
 padding:25px;
 background:rgba(255,255,255,0.1);
-border-radius:10px;
+border-radius:12px;
 text-align:center;
 }
 
 .report-score{
-font-size:40px;
+font-size:42px;
 font-weight:bold;
 margin:15px 0;
 }
@@ -215,28 +225,49 @@ font-weight:bold;
 
 @media(max-width:768px){
 
-.menu{
-display:none;
-flex-direction:column;
-background:#2a0050;
-position:absolute;
-top:70px;
-right:20px;
-padding:20px;
-border-radius:10px;
+nav{
+padding:15px 20px;
 }
 
-.menu.active{
-display:flex;
+.logo{
+font-size:18px;
 }
 
 .hamburger{
 display:block;
 }
 
-.quiz-box{
-padding:25px;
+/* MOBILE MENU */
+
+.menu{
+display:none;
+flex-direction:column;
+position:absolute;
+top:65px;
+right:15px;
+width:220px;
+background:#1b0036;
+border-radius:10px;
+padding:12px 0;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
+
+.menu.active{
+display:flex;
+}
+
+.menu a{
+padding:12px 20px;
+display:block;
+}
+
+/* QUIZ CARD */
+
+.quiz-box{
+padding:28px 22px;
+}
+
+/* BUTTONS STACK */
 
 .controls{
 flex-direction:column;
@@ -244,6 +275,16 @@ flex-direction:column;
 
 .controls button{
 width:100%;
+}
+
+/* QUESTION TEXT */
+
+#questionContainer h3{
+font-size:18px;
+}
+
+.option{
+font-size:15px;
 }
 
 }
@@ -293,9 +334,9 @@ width:100%;
 
 <div class="controls">
 
-<button onclick="prevQuestion()">Previous</button>
+<button id="prevBtn" onclick="prevQuestion()">Previous</button>
 
-<button onclick="nextQuestion()">Next</button>
+<button id="nextBtn" onclick="nextQuestion()">Next</button>
 
 <button onclick="submitQuiz()">Submit Quiz</button>
 
