@@ -15,6 +15,8 @@ const QuizSchema = new mongoose.Schema({
 title:String,
 description:String,
 createdBy:String,
+category:String,
+profile:String,
 quizCode:String,
 questions:[QuestionSchema],
 

@@ -4,7 +4,7 @@ const Quiz = require("../models/Quiz");
 const { nanoid } = require("nanoid");
 
 
-// create quiz
+// CREATE QUIZ
 router.post("/create", async (req,res)=>{
 
 const quizCode = nanoid(6);
@@ -13,6 +13,8 @@ const quiz = new Quiz({
 title:req.body.title,
 description:req.body.description,
 createdBy:req.body.createdBy,
+category:req.body.category,
+profile:req.body.profile,
 quizCode:quizCode,
 questions:req.body.questions
 });
@@ -21,18 +23,56 @@ await quiz.save();
 
 res.json({
 message:"Quiz Created",
-quizLink:`http://localhost:3000/quiz.html?code=${quizCode}`
+quizLink:`/quiz.html?code=${quizCode}`
 });
 
 });
 
 
-// get quiz by code
+// GET ALL QUIZZES  (PUT THIS BEFORE :code)
+router.get("/all", async(req,res)=>{
+
+const category = req.query.category;
+
+let filter = {};
+
+if(category && category !== "ALL"){
+filter.category = category;
+}
+
+const quizzes = await Quiz.find(filter).sort({createdAt:-1});
+
+res.json(quizzes);
+
+});
+
+
+// GET QUIZ BY CODE
 router.get("/:code", async(req,res)=>{
 
 const quiz = await Quiz.findOne({quizCode:req.params.code});
 
+if(!quiz){
+return res.status(404).json({message:"Quiz not found"});
+}
+
 res.json(quiz);
+
+});
+
+
+// DELETE QUIZ
+router.delete("/delete/:id", async(req,res)=>{
+
+const token = req.body.token;
+
+if(token !== "KUNDAN"){
+return res.status(403).json({message:"Invalid token"});
+}
+
+await Quiz.findByIdAndDelete(req.params.id);
+
+res.json({message:"Quiz Deleted Successfully"});
 
 });
 

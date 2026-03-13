@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>About - CSE TRE4.0</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:linear-gradient(135deg,#1c0038,#3c0b6e);
+color:white;
+min-height:100vh;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.menu{
+display:flex;
+gap:30px;
+}
+
+.menu a{
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+.menu a:hover{
+color:#00e5ff;
+}
+
+.hamburger{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* PAGE */
+
+.page{
+display:flex;
+justify-content:center;
+padding:60px 20px;
+}
+
+/* CARD */
+
+.container{
+
+background:rgba(255,255,255,0.1);
+
+backdrop-filter:blur(12px);
+
+padding:40px;
+
+border-radius:12px;
+
+max-width:900px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+}
+
+/* TITLE */
+
+.container h1{
+margin-bottom:20px;
+text-align:center;
+}
+
+/* TEXT */
+
+.container p{
+margin-bottom:18px;
+line-height:1.7;
+opacity:0.9;
+}
+
+.container h2{
+margin-top:25px;
+margin-bottom:12px;
+color:#00e5ff;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+opacity:0.7;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.menu{
+display:none;
+flex-direction:column;
+background:#2a0050;
+position:absolute;
+top:70px;
+right:20px;
+padding:20px;
+border-radius:10px;
+}
+
+.menu.active{
+display:flex;
+}
+
+.hamburger{
+display:block;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">CSE TRE4.0</div>
+
+<div class="menu" id="menu">
+
+<a href="index.html">Home</a>
+<a href="all-quiz.html?category=ALL">All Quiz</a>
+<a href="all-quiz.html?category=CS">CS</a>
+<a href="all-quiz.html?category=GKGS">GKGS</a>
+<a href="about.html">About</a>
+
+</div>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+</nav>
+
+<!-- ABOUT SECTION -->
+
+<div class="page">
+
+<div class="container">
+
+<h1>About CSE TRE4.0</h1>
+
+<p>
+CSE TRE4.0 is an online quiz platform created to help students prepare for
+competitive examinations through interactive quizzes.
+This platform focuses mainly on helping candidates preparing for
+<strong>BPSC TRE 4.0 (Teacher Recruitment Examination)</strong>,
+especially for the <strong>Computer Science (CSE)</strong> subject.
+</p>
+
+<h2>Purpose of This Platform</h2>
+
+<p>
+The goal of CSE TRE4.0 is to provide an easy and effective way for students
+to test their knowledge. Instead of only reading theory,
+students can practice multiple-choice questions and instantly
+evaluate their understanding.
+</p>
+
+<h2>What You Can Do Here</h2>
+
+<p>
+• Practice Computer Science quizzes relevant to BPSC TRE syllabus.<br>
+• Improve speed and accuracy through MCQ practice.<br>
+• Explore quizzes created by other users.<br>
+• Create and share your own quizzes with others.<br>
+</p>
+
+<h2>Why Quiz Practice?</h2>
+
+<p>
+Regular quiz practice helps students strengthen concepts,
+identify weak areas, and become comfortable with the type of
+questions asked in competitive exams like BPSC TRE.
+</p>
+
+<h2>Community Learning</h2>
+
+<p>
+CSE TRE4.0 also encourages collaborative learning.
+Students can join the community group, discuss questions,
+share quizzes, and learn together with other aspirants.
+</p>
+
+<h2>Future Improvements</h2>
+
+<p>
+More features will be added in the future including:
+leaderboards, detailed performance analysis,
+and topic-wise quizzes aligned with the BPSC TRE syllabus.
+</p>
+
+<p>
+This platform is built with the goal of supporting
+students in their journey toward becoming successful teachers.
+</p>
+
+</div>
+
+</div>
+
+<footer>
+
+Made with ❤️ for BPSC TRE 4.0 Aspirants
+
+</footer>
+
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active")
+}
+
+</script>
+
+</body>
+</html>

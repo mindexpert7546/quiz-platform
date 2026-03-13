@@ -1,49 +1,443 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <title>Quiz Platform</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-body{
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial;
-background:#f4f6f9;
-text-align:center;
-padding:40px;
 }
 
-.container{
-background:white;
-padding:40px;
-border-radius:10px;
-width:400px;
-margin:auto;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
-
-a{
-display:inline-block;
-margin-top:20px;
-padding:12px 20px;
-background:#4CAF50;
+body{
+background:linear-gradient(135deg,#1c0038,#3c0b6e);
 color:white;
-text-decoration:none;
-border-radius:5px;
 }
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.menu{
+display:flex;
+gap:30px;
+}
+
+.menu a{
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+.menu a:hover{
+color:#00e5ff;
+}
+
+/* MOBILE MENU */
+
+.hamburger{
+display:none;
+font-size:25px;
+cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:60px 8%;
+min-height:80vh;
+}
+
+.hero-text{
+max-width:500px;
+}
+
+.hero-text h1{
+font-size:50px;
+margin-bottom:20px;
+}
+
+.hero-text span{
+color:#00e5ff;
+}
+
+.hero-text p{
+opacity:0.8;
+margin-bottom:30px;
+}
+
+.hero-text button{
+background:#00c853;
+border:none;
+padding:12px 25px;
+color:white;
+font-size:16px;
+border-radius:6px;
+cursor:pointer;
+transition:.3s;
+}
+
+.hero-text button:hover{
+background:#00b34a;
+}
+
+/* IMAGE */
+
+.hero img{
+width:400px;
+max-width:100%;
+}
+
+/* QUIZ SECTION */
+
+.quiz-section{
+padding:80px 8%;
+text-align:center;
+}
+
+.quiz-section h2{
+margin-bottom:40px;
+font-size:32px;
+}
+/* GRID */
+
+.quiz-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+
+gap:30px;
+
+max-width:1100px;
+
+margin:auto;
+
+}
+
+/* CARD */
+
+.quiz-card{
+
+background:rgba(255,255,255,0.1);
+
+padding:30px;
+
+border-radius:12px;
+
+backdrop-filter:blur(12px);
+
+transition:.3s;
+
+text-align:left;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.25);
+
+}
+
+.quiz-card:hover{
+transform:translateY(-6px);
+}
+
+/* TITLE */
+
+.quiz-card h3{
+font-size:20px;
+margin-bottom:8px;
+}
+
+/* DESCRIPTION */
+
+.quiz-card p{
+opacity:.8;
+margin-bottom:18px;
+font-size:14px;
+}
+
+/* BUTTON */
+
+.quiz-card button{
+
+background:#00c853;
+
+border:none;
+
+padding:10px 16px;
+
+color:white;
+
+border-radius:6px;
+
+cursor:pointer;
+
+font-size:14px;
+
+}
+
+.quiz-card button:hover{
+background:#00b34a;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:30px;
+opacity:0.7;
+}
+.whatsapp-icon{
+width:22px;
+height:22px;
+vertical-align:middle;
+transition:0.3s;
+}
+
+.whatsapp-icon:hover{
+transform:scale(1.2);
+}
+
+.hero-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.join-btn{
+background:#25D366;
+}
+
+.join-btn:hover{
+background:#1ebe5d;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+/* HERO LAYOUT */
+
+.hero{
+flex-direction:column;
+text-align:center;
+padding:40px 20px;
+}
+
+/* TITLE SIZE */
+
+.hero-text h1{
+font-size:36px;
+}
+
+/* HERO IMAGE */
+
+.hero img{
+width:250px;
+margin-top:30px;
+}
+
+/* HERO BUTTONS */
+
+.hero-buttons{
+justify-content:center;
+}
+
+/* NAV MENU */
+
+.menu{
+display:none;
+flex-direction:column;
+background:#2a0050;
+position:absolute;
+top:70px;
+right:20px;
+padding:20px;
+border-radius:10px;
+gap:18px;
+}
+
+.menu.active{
+display:flex;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:block;
+}
+
+/* QUIZ GRID */
+
+.quiz-grid{
+grid-template-columns:1fr;
+padding:20px;
+}
+
+/* QUIZ CARD */
+
+.quiz-card{
+padding:22px;
+}
+
+/* BUTTON SIZE */
+
+.hero-text button{
+width:160px;
+}
+
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<!-- NAVBAR -->
 
-<h1>Quiz Platform</h1>
+<nav>
 
-<p>Create quizzes and share links with anyone.</p>
+<div class="logo">CSE TRE4.0</div>
 
-<a href="create.html">Create Quiz</a>
+<div class="menu" id="menu">
+<a href="#">Home</a>
+<a href="all-quiz.html?category=ALL">All Quiz</a>
+<a href="all-quiz.html?category=CS">CS</a>
+<a href="all-quiz.html?category=GKGS">GKGS</a>
+<a href="about.html">About</a>
+
+<!-- <a href="https://chat.whatsapp.com/Gh4xu2EsVxdJQGKK0AYILm?mode=gi_t" target="_blank">
+<img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"
+alt="WhatsApp"
+class="whatsapp-icon">
+</a> -->
 
 </div>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+</nav>
+
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+<div class="hero-text">
+
+<h1>Online <span>Quizzes</span></h1>
+
+<p>
+Test your knowledge with interactive quizzes in Computer Science,
+General Knowledge and more.
+</p>
+
+<div class="hero-buttons">
+
+<button onclick="location.href='create.html'">
+Create Quiz
+</button>
+
+<button class="join-btn"
+onclick="window.open('https://chat.whatsapp.com/Gh4xu2EsVxdJQGKK0AYILm?mode=gi_t','_blank')">
+
+<img src="https://cdn-icons-png.flaticon.com/512/124/124034.png"
+style="width:18px; vertical-align:middle; margin-right:6px;">
+
+Join Group
+</button>
+
+</div>
+
+</div>
+
+<img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+
+</section>
+
+
+<!-- QUIZ CATEGORY SECTION -->
+<div class="quiz-grid" id="latestQuiz"></div>
+<footer>
+
+Made with ❤️ by Kundan
+
+</footer>
+
+
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active")
+}
+
+async function loadLatestQuiz(){
+
+try{
+
+let res = await fetch("/api/quiz/all?category=ALL")
+
+let quizzes = await res.json()
+
+let latest = quizzes.slice(0,4)
+
+let html = ""
+
+latest.forEach(q=>{
+
+html += `
+<div class="quiz-card">
+
+<h3>${q.title}</h3>
+
+<p>${q.description || "Test your knowledge"}</p>
+
+<button onclick="startQuiz('${q.quizCode}')">
+Start Quiz
+</button>
+
+</div>
+`
+
+})
+
+document.getElementById("latestQuiz").innerHTML = html
+
+}catch(err){
+
+console.log("Failed to load quizzes")
+
+}
+
+}
+
+function startQuiz(code){
+window.location = "/quiz.html?code=" + code
+}
+
+loadLatestQuiz()
+
+</script>
 
 </body>
 </html>

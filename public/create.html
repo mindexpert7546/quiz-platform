@@ -2,37 +2,233 @@
 <html>
 
 <head>
+
 <title>Create Quiz</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 
-body{
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
 font-family:Arial;
-background:#f4f6f9;
-padding:40px;
 }
+
+/* BACKGROUND */
+
+body{
+background:linear-gradient(135deg,#1c0038,#3c0b6e);
+color:white;
+min-height:100vh;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.menu{
+display:flex;
+gap:30px;
+}
+
+.menu a{
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+.menu a:hover{
+color:#00e5ff;
+}
+
+.hamburger{
+display:none;
+font-size:25px;
+cursor:pointer;
+}
+
+/* PAGE */
+
+.page{
+display:flex;
+justify-content:center;
+padding:40px 20px;
+}
+
+/* FORM CARD */
 
 .container{
-background:white;
-padding:30px;
-width:600px;
-margin:auto;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+padding:35px;
+border-radius:12px;
+width:100%;
+max-width:700px;
+box-shadow:0 10px 30px rgba(0,0,0,0.3);
 }
 
-input,textarea{
-width:100%;
-padding:10px;
-margin-bottom:10px;
+/* TITLE */
+
+h2{
+text-align:center;
+margin-bottom:20px;
 }
+
+/* REQUIRED NOTE */
+
+.required-note{
+text-align:center;
+font-size:13px;
+margin-bottom:15px;
+color:#ddd;
+}
+
+.req{
+color:#ff4d4d;
+font-weight:bold;
+}
+
+/* LABEL */
+
+label{
+display:block;
+margin-bottom:5px;
+font-size:14px;
+}
+
+/* INPUT */
+
+input, textarea, select{
+width:100%;
+padding:12px;
+margin-bottom:14px;
+border-radius:6px;
+border:none;
+background:rgba(255,255,255,0.2);
+color:white;
+font-size:14px;
+}
+
+input::placeholder,
+textarea::placeholder{
+color:#ddd;
+}
+
+textarea{
+height:160px;
+resize:vertical;
+}
+
+/* DROPDOWN FIX */
+
+select option{
+background:#2a0050;
+color:white;
+}
+
+/* BUTTON */
 
 button{
-background:#4CAF50;
-color:white;
-padding:10px 20px;
+width:100%;
+background:#00c853;
 border:none;
+padding:12px;
+color:white;
+font-size:16px;
+border-radius:6px;
 cursor:pointer;
+transition:.2s;
+}
+
+button:hover{
+background:#00b34a;
+}
+
+/* JSON HINT */
+
+.hint{
+background:rgba(255,255,255,0.15);
+padding:12px;
+border-radius:6px;
+font-size:12px;
+margin-top:10px;
+}
+
+.hint pre{
+white-space:pre-wrap;
+color:#ddd;
+}
+
+/* MESSAGE */
+
+.message{
+margin-top:15px;
+text-align:center;
+font-weight:bold;
+}
+
+.success{
+color:#4ade80;
+}
+
+.error{
+color:#f87171;
+}
+
+/* LOADER */
+
+.loader{
+display:none;
+margin:20px auto;
+border:4px solid rgba(255,255,255,0.3);
+border-top:4px solid #00c853;
+border-radius:50%;
+width:30px;
+height:30px;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg)}
+100%{transform:rotate(360deg)}
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.menu{
+display:none;
+flex-direction:column;
+background:#2a0050;
+position:absolute;
+top:70px;
+right:20px;
+padding:20px;
+border-radius:10px;
+}
+
+.menu.active{
+display:flex;
+}
+
+.hamburger{
+display:block;
+}
+
 }
 
 </style>
@@ -41,25 +237,114 @@ cursor:pointer;
 
 <body>
 
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">CSE TRE4.0</div>
+
+<div class="menu" id="menu">
+<a href="/">Home</a>
+<a href="all-quiz.html?category=ALL">All Quiz</a>
+<a href="all-quiz.html?category=CS">CS</a>
+<a href="all-quiz.html?category=GKGS">GKGS</a>
+<a href="create.html">Create Quiz</a>
+</div>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+</nav>
+
+<!-- PAGE -->
+
+<div class="page">
+
 <div class="container">
 
 <h2>Create Quiz</h2>
 
-<input id="title" placeholder="Quiz Title">
+<p class="required-note">
+Fields marked with <span class="req">*</span> are required
+</p>
 
-<input id="description" placeholder="Description">
+<form id="quizForm">
 
-<input id="creator" placeholder="Created By">
+<label>Quiz Title <span class="req">*</span></label>
+<input id="title" placeholder="Quiz Title" required>
 
-<p>Paste Minimum 10 Questions JSON</p>
+<label>Description <span class="req">*</span></label>
+<input id="description" placeholder="Description" required>
 
-<textarea id="questions" rows="10"></textarea>
+<label>Created By <span class="req">*</span></label>
+<input id="creator" placeholder="Created By" required>
 
-<button onclick="createQuiz()">Create Quiz</button>
+<label>Category <span class="req">*</span></label>
+<select id="category" required>
+<option value="">Select Category</option>
+<option value="CS">CS</option>
+<option value="GKGS">GKGS</option>
+</select>
 
-<p id="link"></p>
+<label>Profile Image URL</label>
+<input id="profile" placeholder="Profile Image URL">
+
+<p><b>Paste Minimum 10 Questions JSON <span class="req">*</span></b></p>
+
+<textarea id="questions" required
+placeholder='Example JSON:
+[
+ {
+  "question":"What is HTML?",
+  "options":[
+   {"text":"Markup Language","isCorrect":true},
+   {"text":"Programming Language","isCorrect":false},
+   {"text":"Database","isCorrect":false},
+   {"text":"Operating System","isCorrect":false}
+  ]
+ }
+]'></textarea>
+
+<div class="hint">
+
+<b>JSON Example Format</b>
+
+<pre>
+[
+ {
+  "question":"What is HTML?",
+  "options":[
+   {"text":"Markup Language","isCorrect":true},
+   {"text":"Programming Language","isCorrect":false},
+   {"text":"Database","isCorrect":false},
+   {"text":"Operating System","isCorrect":false}
+  ]
+ }
+]
+</pre>
 
 </div>
+
+<button id="submitBtn" onclick="createQuiz(event)">
+Create Quiz
+</button>
+
+</form>
+
+<div class="loader" id="loader"></div>
+
+<div id="message" class="message"></div>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active")
+}
+
+</script>
 
 <script src="script.js"></script>
 

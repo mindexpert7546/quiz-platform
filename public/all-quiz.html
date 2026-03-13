@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>All Quiz</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+/* BACKGROUND SAME AS HOME */
+
+body{
+background:linear-gradient(135deg,#1c0038,#3c0b6e);
+color:white;
+min-height:100vh;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 8%;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+.menu{
+display:flex;
+gap:30px;
+}
+
+.menu a{
+text-decoration:none;
+color:white;
+font-weight:500;
+transition:.3s;
+}
+
+.menu a:hover{
+color:#00e5ff;
+}
+
+.hamburger{
+display:none;
+font-size:25px;
+cursor:pointer;
+}
+
+/* PAGE */
+
+.container{
+padding:40px 8%;
+}
+
+h2{
+margin-bottom:30px;
+}
+
+/* QUIZ GRID */
+
+.quiz-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+/* QUIZ CARD */
+
+.quiz-card{
+
+background:rgba(255,255,255,0.1);
+
+backdrop-filter:blur(10px);
+
+padding:25px;
+
+border-radius:12px;
+
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
+
+transition:.3s;
+
+}
+
+.quiz-card:hover{
+transform:translateY(-5px);
+}
+
+/* PROFILE */
+
+.profile{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:10px;
+}
+
+.profile img{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
+/* TEXT */
+
+.quiz-title{
+font-size:18px;
+font-weight:bold;
+margin-bottom:5px;
+}
+
+.quiz-desc{
+opacity:.8;
+font-size:14px;
+margin-bottom:10px;
+}
+
+.quiz-meta{
+font-size:13px;
+opacity:.7;
+margin-bottom:15px;
+}
+
+/* BUTTONS */
+
+.actions{
+display:flex;
+gap:10px;
+}
+
+.start{
+background:#00c853;
+border:none;
+padding:8px 16px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.delete{
+background:#ff5252;
+border:none;
+padding:8px 16px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.menu{
+display:none;
+flex-direction:column;
+background:#2a0050;
+position:absolute;
+top:70px;
+right:20px;
+padding:20px;
+border-radius:10px;
+}
+
+.menu.active{
+display:flex;
+}
+
+.hamburger{
+display:block;
+}
+
+.container{
+padding:30px 20px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">CSE TRE4.0</div>
+
+<div class="menu" id="menu">
+
+<a href="/">Home</a>
+<a href="all-quiz.html?category=ALL">All Quiz</a>
+<a href="all-quiz.html?category=CS">CS</a>
+<a href="all-quiz.html?category=GKGS">GKGS</a>
+<a href="create.html">Create Quiz</a>
+
+</div>
+
+<div class="hamburger" onclick="toggleMenu()">☰</div>
+
+</nav>
+
+
+<!-- PAGE -->
+
+<div class="container">
+
+<h2 id="title"></h2>
+
+<div class="quiz-grid" id="quizGrid"></div>
+
+</div>
+
+
+<script>
+
+function toggleMenu(){
+document.getElementById("menu").classList.toggle("active")
+}
+
+const params = new URLSearchParams(window.location.search)
+
+const category = params.get("category") || "ALL"
+
+document.getElementById("title").innerText = category + " Quizzes"
+
+loadQuiz()
+
+async function loadQuiz(){
+
+let res = await fetch("/api/quiz/all?category="+category)
+
+let quizzes = await res.json()
+
+let html=""
+
+quizzes.forEach(q=>{
+
+html+=`
+
+<div class="quiz-card">
+
+<div class="profile">
+
+<img src="${q.profile || 'https://ui-avatars.com/api/?name='+q.createdBy}">
+
+<div>
+
+<div class="quiz-title">${q.title}</div>
+
+<div class="quiz-meta">Created by ${q.createdBy}</div>
+
+</div>
+
+</div>
+
+<div class="quiz-desc">${q.description || "-"}</div>
+
+<div class="quiz-meta">Category: ${q.category || "-"}</div>
+
+<div class="actions">
+
+<button type="button" class="start" onclick="startQuiz('${q.quizCode}')">
+Start Quiz
+</button>
+
+<button class="delete" onclick="deleteQuiz('${q._id}')">
+Delete
+</button>
+
+</div>
+
+</div>
+
+`
+
+})
+
+document.getElementById("quizGrid").innerHTML = html
+
+}
+
+// function startQuiz(code){
+// window.location = "/quiz.html?code="+code
+// }
+function startQuiz(code){
+
+let name = prompt("Enter your name to start the quiz:")
+
+if(!name){
+return
+}
+
+name = name.trim()
+
+if(name === ""){
+alert("Please enter your name")
+return
+}
+
+name = encodeURIComponent(name)
+
+window.location.href = "/quiz.html?code=" + code + "&name=" + name
+
+}
+
+async function deleteQuiz(id){
+
+let token = prompt("Enter delete token")
+
+if(!token) return
+
+let res = await fetch("/api/quiz/delete/"+id,{
+method:"DELETE",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({token})
+})
+
+let data = await res.json()
+
+alert(data.message)
+
+loadQuiz()
+
+}
+
+</script>
+
+</body>
+
+</html>
