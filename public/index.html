@@ -28,6 +28,7 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 8%;
+position:relative;
 }
 
 .logo{
@@ -55,8 +56,9 @@ color:#00e5ff;
 
 .hamburger{
 display:none;
-font-size:25px;
+font-size:28px;
 cursor:pointer;
+color:white;
 }
 
 /* HERO */
@@ -231,6 +233,57 @@ background:#25D366;
 background:#1ebe5d;
 }
 
+/* VIDEO SECTION */
+
+/* VIDEO SECTION */
+
+.video-section{
+padding:60px 8%;
+text-align:center;
+}
+
+.video-section h2{
+font-size:28px;
+margin-bottom:25px;
+}
+
+/* VIDEO WRAPPER */
+
+.video-wrapper{
+max-width:800px;
+margin:auto;
+border-radius:12px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.4);
+}
+
+.video-wrapper iframe{
+width:100%;
+height:450px;
+border:none;
+display:block;
+}
+
+
+/* MOBILE VIDEO FIX */
+
+@media(max-width:768px){
+
+.video-section{
+padding:40px 20px;
+}
+
+.video-section h2{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.video-wrapper iframe{
+height:220px;
+}
+
+}
+
 /* MOBILE */
 
 @media(max-width:768px){
@@ -264,16 +317,37 @@ justify-content:center;
 
 /* NAV MENU */
 
+/* MOBILE NAV MENU */
+
 .menu{
 display:none;
 flex-direction:column;
-background:#2a0050;
 position:absolute;
 top:70px;
-right:20px;
-padding:20px;
-border-radius:10px;
-gap:18px;
+right:15px;
+width:220px;
+background:#2a0050;
+border-radius:12px;
+padding:10px 0;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* ACTIVE MENU */
+
+.menu.active{
+display:flex;
+}
+
+/* MENU LINKS */
+
+.menu a{
+padding:12px 20px;
+display:block;
+width:100%;
+}
+
+.menu a:hover{
+background:rgba(255,255,255,0.08);
 }
 
 .menu.active{
@@ -375,9 +449,34 @@ Join Group
 
 </section>
 
+<!-- YOUTUBE VIDEO SECTION -->
+
+<section class="video-section">
+
+<h2>How This Quiz Platform Works</h2>
+
+<div class="video-wrapper">
+
+<iframe 
+src="https://www.youtube.com/embed/XQQaHybOM6g?si=QH6gN5bHtZct3phB"
+title="Quiz Platform Tutorial"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen>
+</iframe>
+
+</div>
+
+</section>
 
 <!-- QUIZ CATEGORY SECTION -->
+<section class="quiz-section">
+
+<h2>Latest Quizzes</h2>
+
 <div class="quiz-grid" id="latestQuiz"></div>
+
+</section>
 <footer>
 
 Made with ❤️ by Kundan
