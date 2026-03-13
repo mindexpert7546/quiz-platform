@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 
 <head>
@@ -13,13 +14,14 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:Arial, sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#1c0038,#3c0b6e);
+background:linear-gradient(135deg,#120024,#3b0071,#180032);
 color:white;
 min-height:100vh;
+overflow-x:hidden;
 }
 
 /* NAVBAR */
@@ -29,6 +31,11 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 8%;
+position:sticky;
+top:0;
+background:rgba(0,0,0,0.25);
+backdrop-filter:blur(10px);
+z-index:1000;
 }
 
 .logo{
@@ -45,7 +52,7 @@ gap:30px;
 text-decoration:none;
 color:white;
 font-weight:500;
-transition:.3s;
+transition:0.3s;
 }
 
 .menu a:hover{
@@ -63,32 +70,26 @@ cursor:pointer;
 .page{
 display:flex;
 justify-content:center;
-padding:60px 20px;
+padding:70px 20px;
 }
 
 /* CARD */
 
 .container{
-
-background:rgba(255,255,255,0.1);
-
-backdrop-filter:blur(12px);
-
-padding:40px;
-
-border-radius:12px;
-
+background:rgba(255,255,255,0.07);
+backdrop-filter:blur(15px);
+padding:45px;
+border-radius:16px;
 max-width:900px;
-
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
-
+box-shadow:0 20px 40px rgba(0,0,0,0.35);
 }
 
 /* TITLE */
 
 .container h1{
-margin-bottom:20px;
 text-align:center;
+margin-bottom:25px;
+font-size:32px;
 }
 
 /* TEXT */
@@ -97,43 +98,94 @@ text-align:center;
 margin-bottom:18px;
 line-height:1.7;
 opacity:0.9;
+font-size:15px;
 }
 
+/* SUBHEADINGS */
+
 .container h2{
-margin-top:25px;
+margin-top:28px;
 margin-bottom:12px;
 color:#00e5ff;
+font-size:20px;
+}
+
+/* LIST STYLE */
+
+.list{
+margin-top:10px;
+margin-bottom:15px;
+}
+
+.list div{
+margin-bottom:8px;
 }
 
 /* FOOTER */
 
 footer{
 text-align:center;
-padding:30px;
+padding:35px;
 opacity:0.7;
+font-size:14px;
 }
 
 /* MOBILE */
 
 @media(max-width:768px){
 
+nav{
+padding:15px 20px;
+}
+
+.logo{
+font-size:18px;
+}
+
+.hamburger{
+display:block;
+}
+
 .menu{
 display:none;
 flex-direction:column;
-background:#2a0050;
 position:absolute;
-top:70px;
-right:20px;
-padding:20px;
+top:65px;
+right:15px;
+width:220px;
+background:#1b0036;
 border-radius:10px;
+padding:12px 0;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
 .menu.active{
 display:flex;
 }
 
-.hamburger{
+.menu a{
+padding:12px 20px;
 display:block;
+}
+
+.page{
+padding:40px 15px;
+}
+
+.container{
+padding:30px 22px;
+}
+
+.container h1{
+font-size:24px;
+}
+
+.container h2{
+font-size:18px;
+}
+
+.container p{
+font-size:14px;
 }
 
 }
@@ -152,11 +204,7 @@ display:block;
 
 <div class="menu" id="menu">
 
-<a href="index.html">Home</a>
-<a href="all-quiz.html?category=ALL">All Quiz</a>
-<a href="all-quiz.html?category=CS">CS</a>
-<a href="all-quiz.html?category=GKGS">GKGS</a>
-<a href="about.html">About</a>
+<a href="index.html">Home</a> <a href="all-quiz.html?category=ALL">All Quiz</a> <a href="all-quiz.html?category=CS">CS</a> <a href="all-quiz.html?category=GKGS">GKGS</a> <a href="about.html">About</a>
 
 </div>
 
@@ -173,9 +221,9 @@ display:block;
 <h1>About CSE TRE4.0</h1>
 
 <p>
-CSE TRE4.0 is an online quiz platform created to help students prepare for
+CSE TRE4.0 is an online quiz platform designed to help students prepare for
 competitive examinations through interactive quizzes.
-This platform focuses mainly on helping candidates preparing for
+The platform mainly supports candidates preparing for the
 <strong>BPSC TRE 4.0 (Teacher Recruitment Examination)</strong>,
 especially for the <strong>Computer Science (CSE)</strong> subject.
 </p>
@@ -191,12 +239,12 @@ evaluate their understanding.
 
 <h2>What You Can Do Here</h2>
 
-<p>
-• Practice Computer Science quizzes relevant to BPSC TRE syllabus.<br>
-• Improve speed and accuracy through MCQ practice.<br>
-• Explore quizzes created by other users.<br>
-• Create and share your own quizzes with others.<br>
-</p>
+<div class="list">
+<div>• Practice Computer Science quizzes relevant to the BPSC TRE syllabus.</div>
+<div>• Improve speed and accuracy through MCQ practice.</div>
+<div>• Explore quizzes created by other users.</div>
+<div>• Create and share your own quizzes with others.</div>
+</div>
 
 <h2>Why Quiz Practice?</h2>
 
@@ -217,7 +265,7 @@ share quizzes, and learn together with other aspirants.
 <h2>Future Improvements</h2>
 
 <p>
-More features will be added in the future including:
+More features will be added in the future including
 leaderboards, detailed performance analysis,
 and topic-wise quizzes aligned with the BPSC TRE syllabus.
 </p>
@@ -232,9 +280,7 @@ students in their journey toward becoming successful teachers.
 </div>
 
 <footer>
-
 Made with ❤️ for BPSC TRE 4.0 Aspirants
-
 </footer>
 
 <script>

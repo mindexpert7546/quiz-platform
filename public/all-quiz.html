@@ -7,21 +7,22 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial;
+font-family:'Poppins',sans-serif;
 }
 
-/* BACKGROUND SAME AS HOME */
-
 body{
-background:linear-gradient(135deg,#1c0038,#3c0b6e);
+background:linear-gradient(135deg,#120024,#3b0071,#180032);
 color:white;
 min-height:100vh;
+overflow-x:hidden;
 }
 
 /* NAVBAR */
@@ -31,11 +32,17 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:20px 8%;
+position:sticky;
+top:0;
+background:rgba(0,0,0,0.25);
+backdrop-filter:blur(10px);
+z-index:1000;
 }
 
 .logo{
 font-size:22px;
-font-weight:bold;
+font-weight:600;
+letter-spacing:1px;
 }
 
 .menu{
@@ -56,18 +63,19 @@ color:#00e5ff;
 
 .hamburger{
 display:none;
-font-size:25px;
+font-size:26px;
 cursor:pointer;
 }
 
 /* PAGE */
 
 .container{
-padding:40px 8%;
+padding:60px 8%;
 }
 
 h2{
-margin-bottom:30px;
+margin-bottom:40px;
+font-size:30px;
 }
 
 /* QUIZ GRID */
@@ -75,29 +83,30 @@ margin-bottom:30px;
 .quiz-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:25px;
+gap:30px;
 }
 
 /* QUIZ CARD */
 
 .quiz-card{
 
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.07);
 
-backdrop-filter:blur(10px);
+backdrop-filter:blur(15px);
 
 padding:25px;
 
-border-radius:12px;
+border-radius:14px;
 
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
+box-shadow:0 15px 35px rgba(0,0,0,0.4);
 
-transition:.3s;
+transition:0.35s;
 
 }
 
 .quiz-card:hover{
-transform:translateY(-5px);
+transform:translateY(-8px) scale(1.02);
+background:rgba(255,255,255,0.1);
 }
 
 /* PROFILE */
@@ -106,12 +115,12 @@ transform:translateY(-5px);
 display:flex;
 align-items:center;
 gap:12px;
-margin-bottom:10px;
+margin-bottom:12px;
 }
 
 .profile img{
-width:40px;
-height:40px;
+width:42px;
+height:42px;
 border-radius:50%;
 }
 
@@ -119,14 +128,14 @@ border-radius:50%;
 
 .quiz-title{
 font-size:18px;
-font-weight:bold;
-margin-bottom:5px;
+font-weight:600;
 }
 
 .quiz-desc{
-opacity:.8;
+opacity:.85;
 font-size:14px;
-margin-bottom:10px;
+margin:12px 0;
+line-height:1.5;
 }
 
 .quiz-meta{
@@ -139,52 +148,149 @@ margin-bottom:15px;
 
 .actions{
 display:flex;
-gap:10px;
+gap:12px;
+}
+
+.actions button{
+border:none;
+padding:9px 18px;
+border-radius:6px;
+cursor:pointer;
+font-size:14px;
+transition:.3s;
 }
 
 .start{
 background:#00c853;
-border:none;
-padding:8px 16px;
 color:white;
-border-radius:6px;
-cursor:pointer;
+}
+
+.start:hover{
+background:#00b34a;
 }
 
 .delete{
 background:#ff5252;
-border:none;
-padding:8px 16px;
 color:white;
-border-radius:6px;
-cursor:pointer;
 }
 
-/* MOBILE */
+.delete:hover{
+background:#ff2a2a;
+}
+/* ================= MOBILE RESPONSIVE ================= */
 
-@media(max-width:768px){
+@media (max-width:768px){
+
+/* NAVBAR */
+
+nav{
+padding:15px 20px;
+}
+
+.logo{
+font-size:18px;
+}
+
+/* HAMBURGER */
+
+.hamburger{
+display:block;
+font-size:26px;
+}
+
+/* MOBILE MENU */
 
 .menu{
 display:none;
 flex-direction:column;
-background:#2a0050;
 position:absolute;
-top:70px;
-right:20px;
-padding:20px;
+top:65px;
+right:15px;
+width:220px;
+background:#1b0036;
 border-radius:10px;
+padding:12px 0;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
 }
 
 .menu.active{
 display:flex;
 }
 
-.hamburger{
+.menu a{
+padding:12px 20px;
 display:block;
 }
 
+/* PAGE */
+
 .container{
 padding:30px 20px;
+}
+
+/* TITLE */
+
+h2{
+font-size:24px;
+margin-bottom:25px;
+}
+
+/* GRID */
+
+.quiz-grid{
+grid-template-columns:1fr;
+gap:20px;
+}
+
+/* CARD */
+
+.quiz-card{
+padding:20px;
+}
+
+/* PROFILE */
+
+.profile{
+align-items:center;
+gap:10px;
+}
+
+.profile img{
+width:36px;
+height:36px;
+}
+
+/* TITLE */
+
+.quiz-title{
+font-size:16px;
+}
+
+/* DESCRIPTION */
+
+.quiz-desc{
+font-size:13px;
+line-height:1.4;
+}
+
+/* META */
+
+.quiz-meta{
+font-size:12px;
+}
+
+/* BUTTONS */
+
+.actions{
+flex-direction:column;
+gap:10px;
+margin-top:10px;
+}
+
+.actions button{
+width:100%;
+padding:10px;
+font-size:14px;
 }
 
 }
@@ -215,7 +321,6 @@ padding:30px 20px;
 
 </nav>
 
-
 <!-- PAGE -->
 
 <div class="container">
@@ -225,7 +330,6 @@ padding:30px 20px;
 <div class="quiz-grid" id="quizGrid"></div>
 
 </div>
-
 
 <script>
 
@@ -275,7 +379,7 @@ html+=`
 
 <div class="actions">
 
-<button type="button" class="start" onclick="startQuiz('${q.quizCode}')">
+<button class="start" onclick="startQuiz('${q.quizCode}')">
 Start Quiz
 </button>
 
@@ -295,20 +399,15 @@ document.getElementById("quizGrid").innerHTML = html
 
 }
 
-// function startQuiz(code){
-// window.location = "/quiz.html?code="+code
-// }
 function startQuiz(code){
 
 let name = prompt("Enter your name to start the quiz:")
 
-if(!name){
-return
-}
+if(!name) return
 
 name = name.trim()
 
-if(name === ""){
+if(name===""){
 alert("Please enter your name")
 return
 }
@@ -344,5 +443,4 @@ loadQuiz()
 </script>
 
 </body>
-
 </html>
