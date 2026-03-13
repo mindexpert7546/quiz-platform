@@ -16,6 +16,8 @@ mongoose.connect("mongodb+srv://sportsact7_db_user:vjoYSRd1FeCiG711@cluster0.cgd
 
 app.use("/api/quiz", quizRoutes);
 
-app.listen(3000, ()=>{
-console.log("Server running on port 3000");
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, ()=>{
+console.log("Server running on port " + PORT);
 });
