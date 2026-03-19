@@ -319,6 +319,10 @@ document.getElementById("questionContainer").innerHTML=""
 document.getElementById("progress").innerHTML=""
 document.getElementById("progressFill").style.width = "100%"
 
+// hide controls after submit
+const controls = document.querySelector(".controls")
+if (controls) controls.style.display = "none"
+
 document.getElementById("result").innerHTML = `
 <div class="report-card">
 
@@ -347,9 +351,14 @@ ${status}
 
 <br>
 
-<button onclick="downloadReport()" style="margin-top:15px;background:#00e5ff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;">
+<div style="margin-top:15px;display:flex;gap:10px;flex-wrap:wrap;">
+<button onclick="downloadReport()" style="background:#00e5ff;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;">
 Download Report PDF
 </button>
+<button onclick="downloadQuestionsPdf()" style="background:#1fae5e;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;">
+Download Questions PDF
+</button>
+</div>
 
 </div>
 `
@@ -361,70 +370,171 @@ Download Report PDF
 // -------------------------------
 
 function downloadReport(){
+  const { jsPDF } = window.jspdf
+  const doc = new jsPDF({ unit: "pt", format: "a4" })
+  const margin = 36
+  let y = margin
 
-const { jsPDF } = window.jspdf
+  doc.setFillColor(20, 90, 160)
+  doc.rect(0, 0, doc.internal.pageSize.getWidth(), 92, "F")
+  doc.setTextColor(255, 255, 255)
+  doc.setFontSize(26)
+  doc.text("CSE TRE 4.0", margin, 44)
+  doc.setFontSize(16)
+  doc.text("Quiz Report", margin, 68)
+  doc.setFontSize(10)
+  doc.text(`Quiz: ${quizData.title}`, margin, 86)
 
-const doc = new jsPDF()
+  y = 112
+  const score = quizData.questions.reduce((acc, q, idx) => {
+    const selected = answers[idx]
+    const correct = q.options.findIndex(o => o.isCorrect)
+    return acc + (selected === correct ? 1 : 0)
+  }, 0)
+  const percent = Math.round((score / quizData.questions.length) * 100)
+  const isPass = percent >= 50
 
-let y = 20
+  doc.setFillColor(245, 248, 255)
+  doc.roundedRect(margin, y, doc.internal.pageSize.getWidth() - margin * 2, 72, 10, 10, "F")
+  doc.setFontSize(12)
+  doc.setTextColor(20, 20, 20)
+  doc.text(`Score: ${score} / ${quizData.questions.length} (${percent}%)`, margin + 12, y + 25)
+  doc.setFontSize(12)
+  if (isPass) {
+    doc.setTextColor(0, 120, 0)
+  } else {
+    doc.setTextColor(180, 30, 30)
+  }
+  doc.text(`Status: ${isPass ? "PASSED ✅" : "FAILED ❌"}`, margin + 12, y + 45)
+  y += 96
 
-doc.setFontSize(18)
-doc.text("Quiz Report", 20, y)
+  const printWrapped = (text, x, startY, lineHeight, maxWidth) => {
+    const lines = doc.splitTextToSize(text, maxWidth)
+    lines.forEach((line, i) => doc.text(line, x, startY + i * lineHeight))
+    return startY + lines.length * lineHeight
+  }
 
-y += 10
+  const addPageIfNeeded = (heightNeeded) => {
+    if (y + heightNeeded > doc.internal.pageSize.getHeight() - margin) {
+      doc.addPage()
+      y = margin
+    }
+  }
 
-doc.setFontSize(12)
+  quizData.questions.forEach((q, index) => {
+    addPageIfNeeded(142)
+    doc.setTextColor(16, 16, 16)
+    doc.setFontSize(14)
+    y = printWrapped(`${index + 1}. ${q.question}`, margin, y, 16, doc.internal.pageSize.getWidth() - margin * 2)
+    y += 8
 
-doc.text("Student: " + studentName, 20, y)
-y += 7
+    q.options.forEach((opt, optIndex) => {
+      const isCorrect = !!opt.isCorrect
+      if (isCorrect) {
+        doc.setFillColor(0, 140, 76)
+      } else {
+        doc.setFillColor(22, 115, 255)
+      }
+      const boxHeight = 24
+      doc.roundedRect(margin, y, doc.internal.pageSize.getWidth() - margin * 2, boxHeight, 8, 8, "F")
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(11)
+      doc.text(`${String.fromCharCode(65 + optIndex)}. ${opt.text}`, margin + 10, y + 16, { maxWidth: doc.internal.pageSize.getWidth() - margin * 2 - 20 })
+      y += boxHeight + 6
+    })
 
-doc.text("Quiz: " + quizData.title, 20, y)
-y += 7
+    const selectedIdx = answers[index]
+    const correctIdx = q.options.findIndex(o => o.isCorrect)
+    const selectedText = selectedIdx === undefined ? "Not answered" : `${String.fromCharCode(65 + selectedIdx)}. ${q.options[selectedIdx].text}`
+    const correctText = `${String.fromCharCode(65 + correctIdx)}. ${q.options[correctIdx].text}`
 
-doc.text("Created By: " + quizData.createdBy, 20, y)
-y += 7
+    doc.setTextColor(40, 40, 40)
+    doc.setFontSize(10)
+    doc.text(`Your answer: ${selectedText}`, margin + 10, y)
+    y += 14
+    doc.setTextColor(0, 120, 0)
+    doc.text(`Correct answer: ${correctText}`, margin + 10, y)
+    y += 14
+    const isCorrect = selectedIdx === correctIdx
+    doc.setTextColor(isCorrect ? 0 : 180, isCorrect ? 120 : 20, 20)
+    doc.text(`Result: ${isCorrect ? "Correct" : "Incorrect"}`, margin + 10, y)
+    y += 14
 
-doc.text("Date: " + new Date().toLocaleString(), 20, y)
+    doc.setDrawColor(200, 200, 200)
+    doc.line(margin, y, doc.internal.pageSize.getWidth() - margin, y)
+    y += 16
+  })
 
-y += 12
-
-let score = 0
-
-quizData.questions.forEach((q,index)=>{
-
-let selected = answers[index]
-let correctIndex = q.options.findIndex(o => o.isCorrect)
-
-if(selected === correctIndex){
-score++
+  doc.save(`${quizData.title.replace(/\s+/g, "-").toLowerCase()}-report.pdf`)
 }
 
-doc.setFontSize(12)
+function downloadQuestionsPdf(){
+  const { jsPDF } = window.jspdf
+  const doc = new jsPDF({ unit: "pt", format: "a4" })
+  const margin = 40
+  let y = margin
 
-doc.text((index+1)+". "+q.question, 20, y)
+  doc.setFillColor(17, 83, 166)
+  doc.rect(0, 0, doc.internal.pageSize.getWidth(), 80, "F")
+  doc.setTextColor(255, 255, 255)
+  doc.setFontSize(26)
+  doc.text("CSE TRE 4.0", margin, 45)
+  doc.setFontSize(14)
+  doc.text("Questions & Answers By Kundan", margin, 65)
 
-y += 7
+  y = 100
+  doc.setTextColor(30, 30, 30)
+  doc.setFontSize(12)
+  // header bold
+  doc.setFont("helvetica", "bold")
+  doc.text(`${quizData.title}`, margin, y)
+  y += 16
+  doc.text(`Created by: ${quizData.createdBy}`, margin, y)
+  doc.setFont("helvetica", "normal")
+  y += 22
 
-let selectedText = selected !== undefined ? q.options[selected].text : "Not Answered"
+  const printWrapped = (text, x, startY, lineHeight, maxWidth) => {
+    const lines = doc.splitTextToSize(text, maxWidth)
+    lines.forEach((line, i) => doc.text(line, x, startY + i * lineHeight))
+    return startY + lines.length * lineHeight
+  }
 
-doc.text("Your Answer: "+selectedText, 25, y)
+  const addPageIfNeeded = (extraHeight) => {
+    if (y + extraHeight > doc.internal.pageSize.getHeight() - margin) {
+      doc.addPage()
+      y = margin
+    }
+  }
 
-y += 7
+  quizData.questions.forEach((q, index) => {
+    addPageIfNeeded(170)
+    doc.setTextColor(10, 10, 10)
+    doc.setFontSize(13)
+    y = printWrapped(`${index + 1}. ${q.question}`, margin, y, 16, doc.internal.pageSize.getWidth() - margin * 2)
+    y += 8
 
-doc.text("Correct Answer: "+q.options[correctIndex].text, 25, y)
+    q.options.forEach((opt, oIndex) => {
+      const isCorrect = !!opt.isCorrect
+      const bg = isCorrect ? [0, 153, 68] : [57, 132, 255]
+      const textClr = [255, 255, 255]
+      const label = String.fromCharCode(65 + oIndex)
+      const boxHeight = 24
 
-y += 10
+      doc.setFillColor(...bg)
+      doc.roundedRect(margin, y, doc.internal.pageSize.getWidth() - margin * 2, boxHeight, 6, 6, "F")
+      doc.setTextColor(...textClr)
+      doc.setFontSize(11)
+      doc.text(`${label}. ${opt.text}`, margin + 10, y + 16, { maxWidth: doc.internal.pageSize.getWidth() - margin * 2 - 20 })
+      y += boxHeight + 6
+    })
 
-// new page if needed
-if(y > 270){
-doc.addPage()
-y = 20
-}
+    y += 6
+    doc.setDrawColor(215, 215, 215)
+    doc.line(margin, y, doc.internal.pageSize.getWidth() - margin, y)
+    y += 14
+  })
 
-})
-
-doc.save("quiz-report.pdf")
-
+  doc.save(`${quizData.title.replace(/\s+/g, "-").toLowerCase()}-questions.pdf`)
 }
 
 function updateButtons(){
