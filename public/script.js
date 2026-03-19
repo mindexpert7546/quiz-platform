@@ -127,6 +127,12 @@ document.getElementById("creatorInfo").innerText =
 
 showQuestion()
 
+// Clean URL after quiz loads to keep the address bar neat
+if (window.history && window.history.replaceState) {
+  const cleanPath = window.location.pathname
+  window.history.replaceState({}, document.title, cleanPath)
+}
+
 }
 
 
@@ -358,6 +364,9 @@ Download Report PDF
 <button onclick="downloadQuestionsPdf()" style="background:#1fae5e;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;">
 Download Questions PDF
 </button>
+<button onclick="downloadPresentation()" style="background:#ff8c00;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;">
+Download Presentation
+</button>
 </div>
 
 </div>
@@ -535,6 +544,54 @@ function downloadQuestionsPdf(){
   })
 
   doc.save(`${quizData.title.replace(/\s+/g, "-").toLowerCase()}-questions.pdf`)
+}
+
+function downloadPresentation(){
+  if (typeof PptxGenJS === "undefined") {
+    alert("Presentation library is not loaded. Please check your internet connection and reload the page.")
+    return
+  }
+
+  const token = prompt("Enter token to generate presentation:")
+  if (!token || token.trim().toUpperCase() !== "KUNDAN") {
+    alert("Invalid token. Please enter KUNDAN.")
+    return
+  }
+
+  const pres = new PptxGenJS()
+  pres.defineLayout({ name: "LAYOUT_WIDE", width: 13.33, height: 7.5 })
+  pres.layout = "LAYOUT_WIDE"
+
+  const cover = pres.addSlide()
+  cover.background = { fill: "003366" }
+  cover.addText("CSE TRE 4.0", { x: 0.5, y: 1.2, w: 12.3, h: 1.2, color: "ffffff", fontSize: 32, bold: true, align: "center" })
+  cover.addText(`Title: ${quizData.title}`, { x: 0.5, y: 2.8, w: 12.3, color: "ffffff", fontSize: 18, align: "center" })
+  cover.addText(`Created by: ${quizData.createdBy}`, { x: 0.5, y: 3.4, w: 12.3, color: "ffffff", fontSize: 16, align: "center" })
+
+  quizData.questions.forEach((q, index) => {
+    const slide = pres.addSlide()
+    slide.background = { fill: "f0f4ff" }
+    slide.addText(`Question ${index + 1}`, { x: 0.5, y: 0.3, fontSize: 18, bold: true, color: "003366" })
+    slide.addText(q.question, { x: 0.5, y: 1.1, w: 12.3, fontSize: 20, color: "000000", bold: true })
+
+    q.options.forEach((opt, optIndex) => {
+      const yPos = 1.9 + optIndex * 0.7
+      slide.addText(`${String.fromCharCode(65 + optIndex)}. ${opt.text}`, {
+        x: 0.5,
+        y: yPos,
+        w: 11.8,
+        h: 0.5,
+        color: "ffffff",
+        fill: "2d71d9",
+        fontSize: 14,
+        margin: 0.08,
+        bold: false,
+        align: "left",
+      })
+    })
+  })
+
+  pres.writeFile({ fileName: `${quizData.title.replace(/\s+/g, "-").toLowerCase()}-presentation.pptx` })
 }
 
 function updateButtons(){
