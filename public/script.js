@@ -554,7 +554,7 @@ function downloadPresentation(){
 
   const token = prompt("Enter token to generate presentation:")
   if (!token || token.trim().toUpperCase() !== "KUNDAN") {
-    alert("Invalid token. Please enter KUNDAN.")
+    alert("Invalid token. Presentation generation cancelled.")
     return
   }
 
