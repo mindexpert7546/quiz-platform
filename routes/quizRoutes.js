@@ -56,7 +56,26 @@ if(!quiz){
 return res.status(404).json({message:"Quiz not found"});
 }
 
-res.json(quiz);
+const requiresToken = quiz.questions.length > 10;
+const providedToken = req.query.token;
+
+if(requiresToken && providedToken !== "bpsctrebykundan"){
+    return res.json({
+        title: quiz.title,
+        description: quiz.description,
+        createdBy: quiz.createdBy,
+        category: quiz.category,
+        profile: quiz.profile,
+        quizCode: quiz.quizCode,
+        requiresToken: true,
+        questions: [] // Don't send questions without token
+    });
+}
+
+res.json({
+...quiz.toObject(),
+requiresToken
+});
 
 });
 

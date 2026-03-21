@@ -120,6 +120,21 @@ let res = await fetch("/api/quiz/" + quizCode)
 
 quizData = await res.json()
 
+if(quizData.requiresToken && quizData.questions.length === 0){
+    const token = prompt("This quiz requires a token to access. Please enter the token:");
+    if(!token){
+        alert("Token required to access this quiz.");
+        return;
+    }
+    // Fetch again with token
+    res = await fetch("/api/quiz/" + quizCode + "?token=" + encodeURIComponent(token))
+    quizData = await res.json()
+    if(quizData.questions.length === 0){
+        alert("Invalid token. Access denied.");
+        return;
+    }
+}
+
 document.getElementById("quizTitle").innerText = quizData.title
 
 document.getElementById("creatorInfo").innerText =
