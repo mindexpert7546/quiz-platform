@@ -34,11 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(controller: passwordController, obscureText: true, decoration: const InputDecoration(labelText: 'Password')),
             const SizedBox(height: 24),
             FilledButton(onPressed: () => context.go('/'), child: const Text('Login')),
-            TextButton(onPressed: () {}, child: const Text('Forgot password')),
-            OutlinedButton(
-              onPressed: () => context.go('/register'),
-              child: const Text('Create new account'),
-            ),
+            TextButton(onPressed: () {}, child: const Text('Forgot password'))
           ],
         ),
       ),
