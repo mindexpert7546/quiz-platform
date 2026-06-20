@@ -29,7 +29,7 @@ const nav = [
   imports: [NgFor, RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule],
   template: `
     <mat-sidenav-container class="shell">
-      <mat-sidenav mode="side" opened class="nav">
+      <mat-sidenav #drawer mode="side" opened class="nav">
         <div class="brand">
           <mat-icon>school</mat-icon>
           <span>ExamOps</span>
@@ -43,6 +43,9 @@ const nav = [
       </mat-sidenav>
       <mat-sidenav-content>
         <mat-toolbar class="topbar">
+          <button mat-icon-button class="menu-toggle" aria-label="Toggle navigation" (click)="drawer.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
           <div>
             <strong>Exam Preparation Platform</strong>
             <small>{{ profile?.role || 'Admin' }}</small>
