@@ -1,0 +1,72 @@
+# Root gitignore for Quiz 2.0 monorepo
+
+# Node / Angular
+node_modules/
+out-tsc/
+dist/
+coverage/
+.angular/
+
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs / editors
+.vscode/
+.idea/
+*.iml
+
+# Java / Maven
+**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# Spring / Java tooling
+*.log
+
+# Flutter / Dart
+**/.dart_tool/
+**/build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub/
+
+# Generated files
+**/.dart_tool/
+**/flutter_export_environment.sh
+
+# Environment files
+*.env
+*.local
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+
+# Git files
+*.orig
+
+# Coverage and reports
+coverage/
+coverage-final.json
+lcov-report/
+
+# Flutter specific
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Misc
+.DS_Store

@@ -1,0 +1,40 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: exam-prep-api
+  datasource:
+    url: jdbc:mysql://localhost:3306/exam_prep?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: Kundan@123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 25MB
+
+app:
+  bootstrap-super-admin:
+    enabled: true
+    name: Super Admin
+    email: admin@example.com
+    password: Admin@12345
+  jwt:
+    secret: change-this-to-a-512-bit-production-secret-change-this-to-a-512-bit-production-secret
+    expiration-minutes: 120
+  storage:
+    provider: local
+    local-path: uploads
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
