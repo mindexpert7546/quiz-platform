@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/app_drawer.dart';
 
 class QuizDetailScreen extends StatelessWidget {
   const QuizDetailScreen({required this.quizId, super.key});
@@ -10,6 +11,7 @@ class QuizDetailScreen extends StatelessWidget {
     final isFiveOption = quizId == '2' || quizId == 'mock-1';
     return Scaffold(
       appBar: AppBar(title: const Text('Quiz Details')),
+      drawer: const AppDrawer(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

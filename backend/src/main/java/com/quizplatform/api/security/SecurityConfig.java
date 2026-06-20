@@ -44,7 +44,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/auth/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**")
+                        .permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/student/**").hasAnyRole("STUDENT", "ADMIN", "SUPER_ADMIN")
                         .anyRequest().authenticated())
@@ -65,7 +66,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOriginPatterns(
+                List.of("http://localhost:*", "http://127.0.0.1:*", "https://localhost:*", "https://127.0.0.1:*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -86,10 +88,11 @@ public class SecurityConfig {
                     users.findByEmail(email).ifPresent(user -> {
                         var authorities = new ArrayList<SimpleGrantedAuthority>();
                         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
-                        user.getRole().getPermissions().forEach(permission ->
-                                authorities.add(new SimpleGrantedAuthority(permission.getModule() + "_" + permission.getAction())));
+                        user.getRole().getPermissions().forEach(permission -> authorities.add(
+                                new SimpleGrantedAuthority(permission.getModule() + "_" + permission.getAction())));
                         var authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
-                        org.springframework.security.core.context.SecurityContextHolder.getContext().setAuthentication(authentication);
+                        org.springframework.security.core.context.SecurityContextHolder.getContext()
+                                .setAuthentication(authentication);
                     });
                 }
                 chain.doFilter(request, response);

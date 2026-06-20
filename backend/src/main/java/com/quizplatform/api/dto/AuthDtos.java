@@ -10,9 +10,11 @@ public final class AuthDtos {
     public record LoginRequest(@Email String email, @NotBlank String password) {
     }
 
-    public record RegisterRequest(@NotBlank String name, @Email String email, @NotBlank String password, String mobileNumber) {
+    public record RegisterRequest(@NotBlank String name, @Email String email, @NotBlank String password,
+            String mobileNumber) {
     }
 
-    public record AuthResponse(String token, String tokenType, String name, String email, String role) {
+    public record AuthResponse(String token, String tokenType, String name, String email, String role,
+            String mobileNumber) {
     }
 }

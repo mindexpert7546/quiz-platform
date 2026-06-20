@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/app_drawer.dart';
 
 class ExamDetailScreen extends StatelessWidget {
   const ExamDetailScreen({required this.examId, super.key});
@@ -10,6 +11,7 @@ class ExamDetailScreen extends StatelessWidget {
     final subjects = ['Computer Science', 'Mathematics', 'General Knowledge'];
     return Scaffold(
       appBar: AppBar(title: const Text('BPSC TRE 4.0')),
+      drawer: const AppDrawer(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [

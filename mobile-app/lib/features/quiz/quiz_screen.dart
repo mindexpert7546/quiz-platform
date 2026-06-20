@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/app_drawer.dart';
 
 class QuizScreen extends StatefulWidget {
   const QuizScreen({required this.quizId, super.key});
@@ -54,6 +55,7 @@ class _QuizScreenState extends State<QuizScreen> {
         title: Text('Quiz ${widget.quizId}'),
         actions: [Center(child: Padding(padding: const EdgeInsets.only(right: 16), child: Text('$minutes:$seconds')))],
       ),
+      drawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

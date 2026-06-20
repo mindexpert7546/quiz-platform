@@ -19,7 +19,8 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public AuthService(UserRepository users, RoleRepository roles, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthService(UserRepository users, RoleRepository roles, PasswordEncoder passwordEncoder,
+            JwtService jwtService) {
         this.users = users;
         this.roles = roles;
         this.passwordEncoder = passwordEncoder;
@@ -31,7 +32,8 @@ public class AuthService {
         if (users.existsByEmail(request.email())) {
             throw new IllegalArgumentException("Email is already registered");
         }
-        var role = roles.findByName("STUDENT").orElseThrow(() -> new ResourceNotFoundException("Student role not found"));
+        var role = roles.findByName("STUDENT")
+                .orElseThrow(() -> new ResourceNotFoundException("Student role not found"));
         User user = new User();
         user.setName(request.name());
         user.setEmail(request.email());
@@ -43,7 +45,8 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        User user = users.findByEmail(request.email()).orElseThrow(() -> new ResourceNotFoundException("Invalid credentials"));
+        User user = users.findByEmail(request.email())
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid credentials"));
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
             throw new ResourceNotFoundException("Invalid credentials");
         }
@@ -51,6 +54,12 @@ public class AuthService {
     }
 
     private AuthResponse response(User user) {
-        return new AuthResponse(jwtService.generate(user), "Bearer", user.getName(), user.getEmail(), user.getRole().getName());
+        return new AuthResponse(
+                jwtService.generate(user),
+                "Bearer",
+                user.getName(),
+                user.getEmail(),
+                user.getRole().getName(),
+                user.getMobileNumber() != null ? user.getMobileNumber() : "");
     }
 }
