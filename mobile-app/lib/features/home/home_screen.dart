@@ -1,93 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/app_drawer.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  Future<Map<String, String>> _loadUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    return {
-      'name': prefs.getString('student_name') ?? 'Guest User',
-      'email': prefs.getString('student_email') ?? 'guest@example.com',
-    };
-  }
-
-  Future<void> _logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('student_token');
-    await prefs.remove('student_name');
-    await prefs.remove('student_email');
-    context.go('/login');
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Exam Prep')),
-      drawer: Drawer(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              FutureBuilder<Map<String, String>>(
-                future: _loadUserData(),
-                builder: (context, snapshot) {
-                  final name = snapshot.data?['name'] ?? 'Guest User';
-                  final email = snapshot.data?['email'] ?? 'guest@example.com';
-                  return UserAccountsDrawerHeader(
-                    decoration: const BoxDecoration(color: Color(0xFF2563EB)),
-                    accountName: Text(name, style: const TextStyle(color: Colors.white)),
-                    accountEmail: Text(email, style: const TextStyle(color: Colors.white70)),
-                    currentAccountPicture: const CircleAvatar(child: Icon(Icons.person, color: Colors.white)),
-                  );
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.home),
-                title: const Text('Home'),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('User Profile'),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/profile');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.info),
-                title: const Text('About'),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/about');
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.verified_user),
-                title: const Text('Version'),
-                onTap: () {
-                  Navigator.pop(context);
-                  context.go('/version');
-                },
-              ),
-              const Spacer(),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
-                onTap: () async {
-                  Navigator.pop(context);
-                  await _logout(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(16),

@@ -7,7 +7,12 @@ import 'features/auth/login_screen.dart';
 import 'features/auth/register_screen.dart';
 import 'features/exam/exam_detail_screen.dart';
 import 'features/home/home_screen.dart';
+import 'features/help_feedback/help_feedback_screen.dart';
 import 'features/profile/profile_screen.dart';
+import 'features/purchases/purchases_screen.dart';
+import 'features/rate/rate_screen.dart';
+import 'features/refer_earn/refer_earn_screen.dart';
+import 'features/share/share_screen.dart';
 import 'features/version/version_screen.dart';
 import 'features/quiz/quiz_detail_screen.dart';
 import 'features/quiz/quiz_screen.dart';
@@ -24,6 +29,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
       GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
+      GoRoute(path: '/purchases', builder: (context, state) => const PurchasesScreen()),
+      GoRoute(path: '/help-feedback', builder: (context, state) => const HelpFeedbackScreen()),
+      GoRoute(path: '/refer-earn', builder: (context, state) => const ReferEarnScreen()),
+      GoRoute(path: '/rate', builder: (context, state) => const RateScreen()),
+      GoRoute(path: '/share', builder: (context, state) => const ShareScreen()),
       GoRoute(path: '/about', builder: (context, state) => const AboutScreen()),
       GoRoute(path: '/version', builder: (context, state) => const VersionScreen()),      GoRoute(path: '/exam/:id', builder: (context, state) => ExamDetailScreen(examId: state.pathParameters['id']!)),
       GoRoute(path: '/quiz-detail/:id', builder: (context, state) => QuizDetailScreen(quizId: state.pathParameters['id']!)),

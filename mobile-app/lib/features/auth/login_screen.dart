@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/api_client.dart';
+import '../../core/app_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -52,11 +53,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
 
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('student_token', token);
-      await prefs.setString('student_name', data['name'] as String? ?? '');
-      await prefs.setString('student_email', data['email'] as String? ?? '');
-      await prefs.setString('student_mobile', data['mobileNumber'] as String? ?? '');
+      final serverName = (data['name'] as String?)?.trim();
+      final serverEmail = (data['email'] as String?)?.trim();
+      final serverMobile = (data['mobileNumber'] as String?)?.trim() ?? (data['mobile'] as String?)?.trim();
+      final String savedEmail = serverEmail != null && serverEmail.isNotEmpty ? serverEmail : email;
+      final String savedName;
+      if (serverName != null && serverName.isNotEmpty) {
+        savedName = serverName;
+      } else if (savedEmail.contains('@')) {
+        savedName = savedEmail.split('@').first;
+      } else {
+        savedName = savedEmail;
+      }
 
+      await prefs.setString('student_token', token);
+      await prefs.setString('student_name', savedName);
+      await prefs.setString('student_email', savedEmail);
+      if (serverMobile?.isNotEmpty == true) {
+        await prefs.setString('student_mobile', serverMobile!);
+      }
+
+      if (!mounted) return;
       context.go('/');
     } on DioException catch (error) {
       final message = error.response?.data is Map<String, dynamic>
@@ -82,6 +99,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),

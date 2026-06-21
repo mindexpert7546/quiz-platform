@@ -1,14 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/app_drawer.dart';
 
-class QuizDetailScreen extends StatelessWidget {
+class QuizDetailScreen extends StatefulWidget {
   const QuizDetailScreen({required this.quizId, super.key});
   final String quizId;
 
   @override
+  State<QuizDetailScreen> createState() => _QuizDetailScreenState();
+}
+
+class _QuizDetailScreenState extends State<QuizDetailScreen> {
+  bool _isLoggedIn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginStatus();
+  }
+
+  Future<void> _checkLoginStatus() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isLoggedIn = prefs.getString('student_token') != null;
+    });
+  }
+
+  void _handleAction(BuildContext context) {
+    if (_isLoggedIn) {
+      context.go('/quiz/${widget.quizId}');
+    } else {
+      context.go('/login');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final isFiveOption = quizId == '2' || quizId == 'mock-1';
+    final isFiveOption = widget.quizId == '2' || widget.quizId == 'mock-1';
     return Scaffold(
       appBar: AppBar(title: const Text('Quiz Details')),
       drawer: const AppDrawer(),
@@ -36,9 +65,9 @@ class QuizDetailScreen extends StatelessWidget {
           ),
           const SizedBox(height: 18),
           FilledButton.icon(
-            onPressed: () => context.go('/login'),
-            icon: const Icon(Icons.login),
-            label: const Text('Login or Register to Attend'),
+            onPressed: () => _handleAction(context),
+            icon: Icon(_isLoggedIn ? Icons.play_arrow : Icons.login),
+            label: Text(_isLoggedIn ? 'Start Quiz' : 'Login or Register to Attend'),
           ),
         ],
       ),

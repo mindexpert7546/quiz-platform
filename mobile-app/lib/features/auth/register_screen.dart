@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/api_client.dart';
+import '../../core/app_drawer.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -60,6 +61,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         'mobileNumber': mobile,
       });
       _showMessage('Registration successful. You can now login.');
+      if (!mounted) return;
       context.go('/login');
     } on DioException catch (error) {
       final message = error.response?.data is Map<String, dynamic>
@@ -85,6 +87,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Register')),
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
