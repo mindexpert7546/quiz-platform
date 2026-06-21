@@ -1,11 +1,12 @@
 import { NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { ApiService } from '../../core/api.service';
 
 @Component({
   selector: 'app-masters',
@@ -13,7 +14,8 @@ import { MatTabsModule } from '@angular/material/tabs';
   imports: [ReactiveFormsModule, NgFor, MatButtonModule, MatFormFieldModule, MatIconModule, MatInputModule, MatTabsModule],
   templateUrl: './masters.component.html'
 })
-export class MastersComponent {
+export class MastersComponent implements OnInit {
+  private readonly api = inject(ApiService);
   examForm = new FormBuilder().nonNullable.group({
     name: ['', Validators.required],
     code: ['', Validators.required],
@@ -33,13 +35,23 @@ export class MastersComponent {
   showSubjectForm = false;
   showTopicForm = false;
 
-  exams = [
-    { name: 'BPSC TRE 4.0', code: 'BPSC-TR4', description: 'Government job entrance' },
-    { name: 'SSC CGL', code: 'SSC-CGL', description: 'Combined Graduate Level Exam' }
-  ];
+  exams: any[] = [];
 
   subjects = [{ exam: 'BPSC TRE 4.0', name: 'Computer Science' }, { exam: 'SSC CGL', name: 'Mathematics' }];
   topics = ['Java', 'DBMS', 'Networking', 'Algebra', 'Current Affairs'];
+
+  ngOnInit(): void {
+    this.api.list<any>('/masters/exams').subscribe({
+      next: (page) => (this.exams = page?.content || []),
+      error: () => {
+        // keep local sample data if API fails
+        this.exams = [
+          { name: 'BPSC TRE 4.0', code: 'BPSC-TR4', description: 'Government job entrance' },
+          { name: 'SSC CGL', code: 'SSC-CGL', description: 'Combined Graduate Level Exam' }
+        ];
+      }
+    });
+  }
 
   saveExam() {
     if (this.examForm.invalid) return;
