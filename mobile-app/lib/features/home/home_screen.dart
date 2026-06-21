@@ -1,180 +1,284 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../core/api_client.dart';
-import '../../core/app_drawer.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  late final Future<HomeData> _homeDataFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _homeDataFuture = _fetchHomeData();
-  }
-
-  Future<HomeData> _fetchHomeData() async {
-    final dio = ref.read(dioProvider);
-    final examsResponse = await dio.get('/public/exams', queryParameters: {'page': 0, 'size': 10});
-    final quizzesResponse = await dio.get('/public/quizzes', queryParameters: {'page': 0, 'size': 20});
-
-    final exams = _parseExamList(examsResponse.data);
-    final quizzes = _parseQuizList(quizzesResponse.data);
-    return HomeData(exams: exams, quizzes: quizzes);
-  }
-
-  List<ExamItem> _parseExamList(dynamic data) {
-    final content = (data['content'] as List).cast<Map<String, dynamic>>();
-    return content.map(ExamItem.fromJson).toList();
-  }
-
-  List<QuizItem> _parseQuizList(dynamic data) {
-    final content = (data['content'] as List).cast<Map<String, dynamic>>();
-    return content.map(QuizItem.fromJson).toList();
+  void _showComingSoon(BuildContext context, String title) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('$title will update soon.')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Exam Prep')),
-      drawer: const AppDrawer(),
-      body: SafeArea(
-        child: FutureBuilder<HomeData>(
-          future: _homeDataFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
+    final tiles = [
+      _HomeTileData(
+        title: 'All Exam\nQuiz',
+        subtitle: '| Test Karo',
+        icon: Icons.quiz_outlined,
+        backgroundColor: const Color(0xFFE7F2FF),
+        iconColor: const Color(0xFF1D7DEB),
+        onTap: () => context.go('/exams'),
+      ),
+      _HomeTileData(
+        title: 'Syllabus',
+        icon: Icons.menu_book_rounded,
+        backgroundColor: const Color(0xFFE8F7EC),
+        iconColor: const Color(0xFF19A55A),
+        onTap: () => _showComingSoon(context, 'Syllabus'),
+      ),
+      _HomeTileData(
+        title: 'All Exam\nPYQ',
+        icon: Icons.description_outlined,
+        backgroundColor: const Color(0xFFF0EAFF),
+        iconColor: const Color(0xFF6750D8),
+        onTap: () => _showComingSoon(context, 'All Exam PYQ'),
+      ),
+      _HomeTileData(
+        title: 'Current\nAffairs',
+        icon: Icons.newspaper_rounded,
+        backgroundColor: const Color(0xFFFFF2DF),
+        iconColor: const Color(0xFF6B7280),
+        onTap: () => _showComingSoon(context, 'Current Affairs'),
+      ),
+      _HomeTileData(
+        title: 'Test Karo',
+        icon: Icons.desktop_windows_outlined,
+        backgroundColor: const Color(0xFFE4F2FF),
+        iconColor: const Color(0xFF1677E8),
+        onTap: () => context.go('/exams'),
+      ),
+      _HomeTileData(
+        title: 'Job Alerts',
+        icon: Icons.work_rounded,
+        backgroundColor: const Color(0xFFF7E9FB),
+        iconColor: const Color(0xFF7C4A38),
+        onTap: () => _showComingSoon(context, 'Job Alerts'),
+      ),
+    ];
 
-            if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text('Failed to load exams and quizzes.\n${snapshot.error}', textAlign: TextAlign.center),
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(16, 18, 16, 24),
+      children: [
+        const _HeroBanner(),
+        const SizedBox(height: 26),
+        GridView.builder(
+          itemCount: tiles.length,
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12,
+            mainAxisSpacing: 12,
+            childAspectRatio: 1.48,
+          ),
+          itemBuilder: (context, index) => _HomeTile(data: tiles[index]),
+        ),
+      ],
+    );
+  }
+}
+
+class _HeroBanner extends StatelessWidget {
+  const _HeroBanner();
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        height: 212,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF111111), Color(0xFF30220A), Color(0xFF050505)],
+          ),
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              right: -26,
+              bottom: -22,
+              child: Icon(Icons.train_rounded,
+                  size: 172, color: Colors.orange.withValues(alpha: 0.36)),
+            ),
+            Positioned(
+              left: 20,
+              top: 18,
+              right: 122,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'ALP CBT-2',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'कैसे करें बैच',
+                    style: TextStyle(
+                        color: Color(0xFFFFC107),
+                        fontSize: 34,
+                        fontWeight: FontWeight.w900),
+                  ),
+                  const SizedBox(height: 10),
+                  const _BannerChip(text: 'CBT-2 (PART A & B)'),
+                  const SizedBox(height: 10),
+                  const _BannerChip(
+                      text: 'Live Recorded Class  |  Test Series'),
+                  const SizedBox(height: 12),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(28),
+                      border: Border.all(
+                          color: const Color(0xFFFFD600), width: 1.5),
+                    ),
+                    child: const Text(
+                      'Join Now',
+                      style: TextStyle(
+                          color: Color(0xFFFFB300),
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              right: 18,
+              bottom: 0,
+              child: Icon(Icons.person_rounded,
+                  color: const Color(0xFFFFC766).withValues(alpha: 0.92),
+                  size: 172),
+            ),
+            Positioned(
+              right: 14,
+              bottom: 14,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFD22E),
+                  borderRadius: BorderRadius.circular(18),
                 ),
-              );
-            }
-
-            final homeData = snapshot.data!;
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                const Text('Choose Exam', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 12),
-                for (final exam in homeData.exams)
-                  _ExamCard(
-                    title: exam.name,
-                    subtitle: exam.description,
-                    onTap: () => context.go('/exam/${exam.id}'),
-                  ),
-                const SizedBox(height: 24),
-                const Text('Featured Quizzes', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-                const SizedBox(height: 12),
-                for (final quiz in homeData.quizzes)
-                  _QuizCard(
-                    title: quiz.displayTitle,
-                    details: quiz.details,
-                    onTap: () => context.go('/quiz-detail/${quiz.id}'),
-                  ),
-              ],
-            );
-          },
+                child: const Text('By Ashutosh Sir',
+                    style: TextStyle(fontWeight: FontWeight.w800)),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
 
-class HomeData {
-  HomeData({required this.exams, required this.quizzes});
+class _BannerChip extends StatelessWidget {
+  const _BannerChip({required this.text});
 
-  final List<ExamItem> exams;
-  final List<QuizItem> quizzes;
-}
-
-class ExamItem {
-  ExamItem({required this.id, required this.name, required this.description});
-
-  final String id;
-  final String name;
-  final String description;
-
-  factory ExamItem.fromJson(Map<String, dynamic> json) {
-    return ExamItem(
-      id: json['id'].toString(),
-      name: json['name'] as String? ?? 'Untitled Exam',
-      description: json['description'] as String? ?? 'No description available.',
-    );
-  }
-}
-
-class QuizItem {
-  QuizItem({required this.id, required this.name, required this.setName, required this.durationMinutes, required this.optionCount});
-
-  final String id;
-  final String name;
-  final String setName;
-  final int durationMinutes;
-  final int optionCount;
-
-  factory QuizItem.fromJson(Map<String, dynamic> json) {
-    return QuizItem(
-      id: json['id'].toString(),
-      name: json['name'] as String? ?? 'Untitled Quiz',
-      setName: json['setName'] as String? ?? '',
-      durationMinutes: (json['durationMinutes'] as num?)?.toInt() ?? 0,
-      optionCount: (json['optionCount'] as num?)?.toInt() ?? 4,
-    );
-  }
-
-  String get displayTitle => setName.isNotEmpty ? '$name - $setName' : name;
-  String get details => '$optionCount options · $durationMinutes min';
-}
-
-class _ExamCard extends StatelessWidget {
-  const _ExamCard({required this.title, required this.subtitle, required this.onTap});
-
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-        onTap: onTap,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.38),
+        borderRadius: BorderRadius.circular(8),
+        border:
+            Border.all(color: const Color(0xFFFFD600).withValues(alpha: 0.55)),
       ),
+      child: Text(text,
+          style: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w800)),
     );
   }
 }
 
-class _QuizCard extends StatelessWidget {
-  const _QuizCard({required this.title, required this.details, required this.onTap});
+class _HomeTileData {
+  const _HomeTileData({
+    required this.title,
+    required this.icon,
+    required this.backgroundColor,
+    required this.iconColor,
+    required this.onTap,
+    this.subtitle,
+  });
 
   final String title;
-  final String details;
+  final String? subtitle;
+  final IconData icon;
+  final Color backgroundColor;
+  final Color iconColor;
   final VoidCallback onTap;
+}
+
+class _HomeTile extends StatelessWidget {
+  const _HomeTile({required this.data});
+
+  final _HomeTileData data;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(details),
-        trailing: const Icon(Icons.play_arrow),
-        onTap: onTap,
+    return Material(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8),
+      elevation: 2,
+      shadowColor: Colors.black.withValues(alpha: 0.08),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: data.onTap,
+        child: Padding(
+          padding: const EdgeInsets.all(14),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 34,
+                backgroundColor: data.backgroundColor,
+                child: Icon(data.icon, color: data.iconColor, size: 38),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data.title,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Color(0xFF070B2A),
+                        fontSize: 21,
+                        height: 1.18,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    if (data.subtitle != null) ...[
+                      const SizedBox(height: 6),
+                      Text(
+                        data.subtitle!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          color: Color(0xFF1681F2),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

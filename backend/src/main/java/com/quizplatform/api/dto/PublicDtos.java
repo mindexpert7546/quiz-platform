@@ -14,6 +14,9 @@ public final class PublicDtos {
             Long examId, String examName, String subjectName, String topicName) {
     }
 
+    public record SubjectSummaryResponse(Long id, String name, String description, int quizCount) {
+    }
+
     public record ExamDetailResponse(Long id, String name, String code, String description, String thumbnailUrl,
             String bannerUrl, List<QuizSummaryResponse> quizzes) {
     }

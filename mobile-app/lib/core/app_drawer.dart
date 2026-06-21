@@ -36,7 +36,8 @@ class _AppDrawerState extends State<AppDrawer> {
     await prefs.remove('student_mobile');
   }
 
-  Widget _buildListTile(BuildContext context, IconData icon, String title, String route) {
+  Widget _buildListTile(
+      BuildContext context, IconData icon, String title, String route) {
     return ListTile(
       leading: Icon(icon),
       title: Text(title),
@@ -56,8 +57,10 @@ class _AppDrawerState extends State<AppDrawer> {
           builder: (context, snapshot) {
             final prefs = snapshot.data;
             final isLoggedIn = prefs?.getString(AppConfig.authTokenKey) != null;
-            final email = _displayValue(prefs?.getString('student_email'), 'guest@example.com');
-            final name = _displayName(prefs?.getString('student_name'), prefs?.getString('student_email'));
+            final email = _displayValue(
+                prefs?.getString('student_email'), 'guest@example.com');
+            final name = _displayName(prefs?.getString('student_name'),
+                prefs?.getString('student_email'));
 
             return ListView(
               padding: EdgeInsets.zero,
@@ -68,22 +71,35 @@ class _AppDrawerState extends State<AppDrawer> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CircleAvatar(radius: 28, backgroundColor: Colors.white, child: Icon(Icons.person, size: 32, color: Color(0xFF2563EB))),
+                      const CircleAvatar(
+                          radius: 28,
+                          backgroundColor: Colors.white,
+                          child: Icon(Icons.person,
+                              size: 32, color: Color(0xFF2563EB))),
                       const SizedBox(height: 16),
-                      Text(name, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600)),
+                      Text(name,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600)),
                       const SizedBox(height: 4),
-                      Text(email, style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                      Text(email,
+                          style: const TextStyle(
+                              color: Colors.white70, fontSize: 14)),
                     ],
                   ),
                 ),
                 _buildListTile(context, Icons.home, 'Home', '/'),
                 _buildListTile(context, Icons.person, 'My Profile', '/profile'),
-                _buildListTile(context, Icons.shopping_bag, 'Purchases', '/purchases'),
-                _buildListTile(context, Icons.help_outline, 'Help & Feedback', '/help-feedback'),
-                _buildListTile(context, Icons.card_giftcard, 'Refer & Earn', '/refer-earn'),
+                _buildListTile(
+                    context, Icons.shopping_bag, 'Purchases', '/purchases'),
+                _buildListTile(context, Icons.help_outline, 'Help & Feedback',
+                    '/help-feedback'),
+                _buildListTile(context, Icons.card_giftcard, 'Refer & Earn',
+                    '/refer-earn'),
                 _buildListTile(context, Icons.star_rate, 'Rate', '/rate'),
                 _buildListTile(context, Icons.share, 'Share', '/share'),
-                const Spacer(),
+                const Divider(),
                 if (isLoggedIn)
                   ListTile(
                     leading: const Icon(Icons.logout),

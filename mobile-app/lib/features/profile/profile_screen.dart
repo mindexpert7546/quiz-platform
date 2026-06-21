@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../core/app_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -21,51 +20,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('User Profile')),
-      drawer: const AppDrawer(),
-      body: SafeArea(
-        child: FutureBuilder<Map<String, String>>(
-          future: _loadProfile(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            final profile = snapshot.data ?? {
+    return FutureBuilder<Map<String, String>>(
+      future: _loadProfile(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final profile = snapshot.data ??
+            {
               'name': 'Guest User',
               'email': 'guest@example.com',
               'mobile': 'Not available',
             };
-            return Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text('Profile Details', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-                  const SizedBox(height: 24),
-                  ListTile(
-                    leading: const Icon(Icons.person_outline),
-                    title: const Text('Full Name'),
-                    subtitle: Text(profile['name']!),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.email_outlined),
-                    title: const Text('Email'),
-                    subtitle: Text(profile['email']!),
-                  ),
-                  ListTile(
-                    leading: const Icon(Icons.phone_android),
-                    title: const Text('Mobile No'),
-                    subtitle: Text(profile['mobile']!),
-                  ),
-                  const SizedBox(height: 24),
-                  const Text('Your account settings and profile data will appear here.', style: TextStyle(fontSize: 16)),
-                ],
+        return Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Profile Details',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 24),
+              ListTile(
+                leading: const Icon(Icons.person_outline),
+                title: const Text('Full Name'),
+                subtitle: Text(profile['name']!),
               ),
-            );
-          },
-        ),
-      ),
+              ListTile(
+                leading: const Icon(Icons.email_outlined),
+                title: const Text('Email'),
+                subtitle: Text(profile['email']!),
+              ),
+              ListTile(
+                leading: const Icon(Icons.phone_android),
+                title: const Text('Mobile No'),
+                subtitle: Text(profile['mobile']!),
+              ),
+              const SizedBox(height: 24),
+              const Text(
+                  'Your account settings and profile data will appear here.',
+                  style: TextStyle(fontSize: 16)),
+            ],
+          ),
+        );
+      },
     );
   }
 }

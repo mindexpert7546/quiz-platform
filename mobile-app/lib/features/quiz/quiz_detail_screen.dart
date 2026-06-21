@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/api_client.dart';
 import '../../core/app_config.dart';
-import '../../core/app_drawer.dart';
 
 class QuizDetailScreen extends ConsumerStatefulWidget {
   const QuizDetailScreen({required this.quizId, super.key});
@@ -61,65 +60,96 @@ class _QuizDetailScreenState extends ConsumerState<QuizDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Quiz Details')),
-      drawer: const AppDrawer(),
-      body: SafeArea(
-        child: FutureBuilder<QuizDetail>(
-          future: _quizFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Text('Failed to load quiz details.\n${snapshot.error}', textAlign: TextAlign.center),
-                ),
-              );
-            }
+    return FutureBuilder<QuizDetail>(
+      future: _quizFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Text('Failed to load quiz details.\n${snapshot.error}',
+                  textAlign: TextAlign.center),
+            ),
+          );
+        }
 
-            final quiz = snapshot.data!;
-            return ListView(
-              padding: const EdgeInsets.all(16),
-              children: [
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(18),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(quiz.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w700)),
-                        const SizedBox(height: 10),
-                        Text('${quiz.examName} • ${quiz.subjectName}${quiz.topicName.isNotEmpty ? ' • ${quiz.topicName}' : ''}'),
-                        const SizedBox(height: 16),
-                        DetailRow(label: 'Quiz Set', value: quiz.setName.isNotEmpty ? quiz.setName : 'Standard'),
-                        DetailRow(label: 'Questions', value: '${quiz.questionCount}'),
-                        DetailRow(label: 'Duration', value: '${quiz.durationMinutes} minutes'),
-                        DetailRow(label: 'Options', value: '${quiz.optionCount} options'),
-                        DetailRow(label: 'Access', value: quiz.accessType),
-                      ],
-                    ),
-                  ),
+        final quiz = snapshot.data!;
+        return ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Quiz Instructions',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w800)),
+                    const SizedBox(height: 8),
+                    Text(quiz.title,
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w700)),
+                    const SizedBox(height: 10),
+                    Text(
+                        '${quiz.examName} • ${quiz.subjectName}${quiz.topicName.isNotEmpty ? ' • ${quiz.topicName}' : ''}'),
+                    const SizedBox(height: 16),
+                    DetailRow(
+                        label: 'Quiz Set',
+                        value: quiz.setName.isNotEmpty
+                            ? quiz.setName
+                            : 'Standard'),
+                    DetailRow(
+                        label: 'Questions', value: '${quiz.questionCount}'),
+                    DetailRow(
+                        label: 'Duration',
+                        value: '${quiz.durationMinutes} minutes'),
+                    DetailRow(
+                        label: 'Options', value: '${quiz.optionCount} options'),
+                    DetailRow(label: 'Access', value: quiz.accessType),
+                    const Divider(height: 28),
+                    const _InstructionLine(
+                        text:
+                            'Read every question carefully before choosing an answer.'),
+                    const _InstructionLine(
+                        text:
+                            'The quiz timer starts as soon as you press Start Quiz.'),
+                    const _InstructionLine(
+                        text:
+                            'Use Next and Previous to review your answers before submitting.'),
+                  ],
                 ),
-                const SizedBox(height: 18),
-                FilledButton.icon(
-                  onPressed: () => _handleAction(context),
-                  icon: Icon(_isLoggedIn ? Icons.play_arrow : Icons.login),
-                  label: Text(_isLoggedIn ? 'Start Quiz' : 'Login or Register to Attend'),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+              ),
+            ),
+            const SizedBox(height: 18),
+            FilledButton.icon(
+              onPressed: () => _handleAction(context),
+              icon: Icon(_isLoggedIn ? Icons.play_arrow : Icons.login),
+              label: Text(
+                  _isLoggedIn ? 'Start Quiz' : 'Login or Register to Attend'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
 
 class QuizDetail {
-  QuizDetail({required this.id, required this.name, required this.setName, required this.examName, required this.subjectName, required this.topicName, required this.durationMinutes, required this.optionCount, required this.accessType, required this.questionCount});
+  QuizDetail(
+      {required this.id,
+      required this.name,
+      required this.setName,
+      required this.examName,
+      required this.subjectName,
+      required this.topicName,
+      required this.durationMinutes,
+      required this.optionCount,
+      required this.accessType,
+      required this.questionCount});
 
   final String id;
   final String name;
@@ -133,6 +163,28 @@ class QuizDetail {
   final int questionCount;
 
   String get title => setName.isNotEmpty ? '$name - $setName' : name;
+}
+
+class _InstructionLine extends StatelessWidget {
+  const _InstructionLine({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.check_circle_outline_rounded,
+              size: 18, color: Color(0xFF1681F2)),
+          const SizedBox(width: 8),
+          Expanded(child: Text(text)),
+        ],
+      ),
+    );
+  }
 }
 
 class DetailRow extends StatelessWidget {

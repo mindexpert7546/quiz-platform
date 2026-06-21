@@ -5,10 +5,13 @@ import com.quizplatform.api.dto.PublicDtos.ExamSummaryResponse;
 import com.quizplatform.api.dto.PublicDtos.QuestionResponse;
 import com.quizplatform.api.dto.PublicDtos.QuizDetailResponse;
 import com.quizplatform.api.dto.PublicDtos.QuizSummaryResponse;
+import com.quizplatform.api.dto.PublicDtos.SubjectSummaryResponse;
 import com.quizplatform.api.entity.Exam;
 import com.quizplatform.api.entity.Quiz;
+import com.quizplatform.api.entity.Subject;
 import com.quizplatform.api.repository.ExamRepository;
 import com.quizplatform.api.repository.QuizRepository;
+import com.quizplatform.api.repository.SubjectRepository;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class PublicCatalogController {
     private final ExamRepository exams;
     private final QuizRepository quizzes;
+    private final SubjectRepository subjects;
 
-    public PublicCatalogController(ExamRepository exams, QuizRepository quizzes) {
+    public PublicCatalogController(ExamRepository exams, QuizRepository quizzes, SubjectRepository subjects) {
         this.exams = exams;
         this.quizzes = quizzes;
+        this.subjects = subjects;
     }
 
     @GetMapping("/exams")
@@ -53,6 +58,25 @@ public class PublicCatalogController {
                 exam.getThumbnailUrl(),
                 exam.getBannerUrl(),
                 quizSummaries);
+    }
+
+    @GetMapping("/exams/{examId}/subjects")
+    List<SubjectSummaryResponse> examSubjects(@PathVariable Long examId) {
+        if (!exams.existsById(examId)) {
+            throw new IllegalArgumentException("Exam not found");
+        }
+        return subjects.findAllByExamId(examId).stream()
+                .map(subject -> new SubjectSummaryResponse(
+                        subject.getId(),
+                        subject.getName(),
+                        subject.getDescription(),
+                        quizzes.countByExamIdAndSubjectId(examId, subject.getId())))
+                .toList();
+    }
+
+    @GetMapping("/exams/{examId}/subjects/{subjectId}/quizzes")
+    List<QuizSummaryResponse> subjectQuizzes(@PathVariable Long examId, @PathVariable Long subjectId) {
+        return quizzes.findAllByExamIdAndSubjectId(examId, subjectId).stream().map(this::toQuizSummary).toList();
     }
 
     @GetMapping("/quizzes/{id}")
