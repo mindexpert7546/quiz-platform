@@ -98,21 +98,21 @@ export class MastersComponent {
 
   saveExam() {
     if (this.examForm.invalid) return;
-    this.exams.push(this.examForm.value);
+    this.exams.push(this.examForm.getRawValue());
     this.examForm.reset({ name: '', code: '', description: '' });
     this.showExamForm = false;
   }
 
   saveSubject() {
     if (this.subjectForm.invalid) return;
-    this.subjects.push(this.subjectForm.value);
+    this.subjects.push(this.subjectForm.getRawValue());
     this.subjectForm.reset({ exam: '', name: '' });
     this.showSubjectForm = false;
   }
 
   saveTopic() {
     if (this.topicForm.invalid) return;
-    this.topics.push(this.topicForm.value.name);
+    this.topics.push(this.topicForm.getRawValue().name);
     this.topicForm.reset({ name: '' });
     this.showTopicForm = false;
   }

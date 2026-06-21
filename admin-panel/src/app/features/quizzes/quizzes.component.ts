@@ -6,6 +6,20 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
+interface QuizItem {
+  type: string;
+  set: string;
+  name: string;
+  exam: string;
+  subject: string;
+  topic: string;
+  duration: number;
+  access: string;
+  questions: number;
+  optionCount: number;
+  status: string;
+}
+
 @Component({
   selector: 'app-quizzes',
   standalone: true,
@@ -40,6 +54,7 @@ import { MatInputModule } from '@angular/material/input';
     </section>
   `
 })
+
 export class QuizzesComponent {
   showCreateForm = false;
 
@@ -52,7 +67,7 @@ export class QuizzesComponent {
     questions: [10, Validators.required]
   });
 
-  items = [
+  items: QuizItem[] = [
     { type: 'Topic Quiz', set: 'Set 1', name: 'Java Basics', exam: 'BPSC TRE 4.0', subject: 'Computer Science', topic: 'Java', duration: 20, access: 'Free', questions: 25, optionCount: 4, status: 'Draft' },
     { type: 'Topic Quiz', set: 'Set 2', name: 'Java OOP Practice', exam: 'BPSC TRE 4.0', subject: 'Computer Science', topic: 'Java', duration: 25, access: 'Paid', questions: 30, optionCount: 5, status: 'Published' },
     { type: 'Topic Quiz', set: 'Set 3', name: 'Java Collections', exam: 'BPSC TRE 4.0', subject: 'Computer Science', topic: 'Java', duration: 25, access: 'Paid', questions: 30, optionCount: 4, status: 'Draft' },
@@ -61,7 +76,7 @@ export class QuizzesComponent {
 
   saveQuiz() {
     if (this.quizForm.invalid) return;
-    const value = this.quizForm.value;
+    const value = this.quizForm.getRawValue();
     this.items.push({
       type: 'Topic Quiz',
       set: 'New',

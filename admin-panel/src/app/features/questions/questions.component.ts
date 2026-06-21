@@ -6,6 +6,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
+interface Question {
+  text: string;
+  exam: string;
+  topic: string;
+  set: string;
+  optionCount: number;
+  level: string;
+}
+
 @Component({
   selector: 'app-questions',
   standalone: true,
@@ -33,7 +42,6 @@ import { MatInputModule } from '@angular/material/input';
           <button mat-flat-button color="primary" type="submit">Save Question</button>
         </form>
       </div>
-    </section>
     <div class="table-shell">
       <table>
         <tr><th>Question</th><th>Exam</th><th>Topic</th><th>Quiz Set</th><th>Options</th><th>Difficulty</th><th>Actions</th></tr>
@@ -45,6 +53,7 @@ import { MatInputModule } from '@angular/material/input';
     </div>
   `
 })
+
 export class QuestionsComponent {
   showQuestionForm = false;
 
@@ -57,7 +66,7 @@ export class QuestionsComponent {
     level: ['', Validators.required]
   });
 
-  questions = [
+  questions: Question[] = [
     { text: 'Which Java keyword prevents inheritance?', exam: 'BPSC TRE 4.0', topic: 'Java', set: 'Set 1', optionCount: 4, level: 'Easy' },
     { text: 'Which concept allows method overloading?', exam: 'BPSC TRE 4.0', topic: 'Java', set: 'Set 2', optionCount: 5, level: 'Medium' },
     { text: 'What does 3NF remove from a relation?', exam: 'BPSC TRE 4.0', topic: 'DBMS', set: 'Set 1', optionCount: 4, level: 'Medium' }
@@ -65,7 +74,7 @@ export class QuestionsComponent {
 
   saveQuestion() {
     if (this.questionForm.invalid) return;
-    this.questions.push(this.questionForm.value);
+    this.questions.push(this.questionForm.getRawValue());
     this.questionForm.reset({ text: '', exam: '', topic: '', set: '', optionCount: 4, level: '' });
     this.showQuestionForm = false;
   }
