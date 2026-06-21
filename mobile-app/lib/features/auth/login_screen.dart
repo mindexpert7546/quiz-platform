@@ -66,7 +66,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         savedName = savedEmail;
       }
 
-      await prefs.setString('student_token', token);
+      await prefs.setString(AppConfig.authTokenKey, token);
       await prefs.setString('student_name', savedName);
       await prefs.setString('student_email', savedEmail);
       if (serverMobile?.isNotEmpty == true) {

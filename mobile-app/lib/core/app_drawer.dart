@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'app_config.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -29,7 +30,7 @@ class _AppDrawerState extends State<AppDrawer> {
 
   Future<void> _logout() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('student_token');
+    await prefs.remove(AppConfig.authTokenKey);
     await prefs.remove('student_name');
     await prefs.remove('student_email');
     await prefs.remove('student_mobile');
@@ -54,7 +55,7 @@ class _AppDrawerState extends State<AppDrawer> {
           future: SharedPreferences.getInstance(),
           builder: (context, snapshot) {
             final prefs = snapshot.data;
-            final isLoggedIn = prefs?.getString('student_token') != null;
+            final isLoggedIn = prefs?.getString(AppConfig.authTokenKey) != null;
             final email = _displayValue(prefs?.getString('student_email'), 'guest@example.com');
             final name = _displayName(prefs?.getString('student_name'), prefs?.getString('student_email'));
 

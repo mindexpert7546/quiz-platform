@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
+import { appConfig } from './app-config';
 
 export interface LoginRequest {
   email: string;
@@ -18,9 +19,9 @@ export interface AuthResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:8080/api';
-  private readonly tokenKey = 'exam_admin_token';
-  private readonly profileKey = 'exam_admin_profile';
+  private readonly baseUrl = appConfig.apiBaseUrl;
+  private readonly tokenKey = appConfig.authTokenKey;
+  private readonly profileKey = appConfig.authProfileKey;
 
   constructor(private readonly http: HttpClient, private readonly router: Router) {}
 

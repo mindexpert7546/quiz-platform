@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { appConfig } from './app-config';
 
 export interface Page<T> {
   content: T[];
@@ -10,7 +11,7 @@ export interface Page<T> {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly baseUrl = 'http://localhost:8080/api';
+  private readonly baseUrl = appConfig.apiBaseUrl;
 
   constructor(private readonly http: HttpClient) {}
 

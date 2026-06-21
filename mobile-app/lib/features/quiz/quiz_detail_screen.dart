@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/app_config.dart';
 import '../../core/app_drawer.dart';
 
 class QuizDetailScreen extends StatefulWidget {
@@ -23,7 +24,7 @@ class _QuizDetailScreenState extends State<QuizDetailScreen> {
   Future<void> _checkLoginStatus() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _isLoggedIn = prefs.getString('student_token') != null;
+      _isLoggedIn = prefs.getString(AppConfig.authTokenKey) != null;
     });
   }
 

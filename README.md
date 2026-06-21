@@ -35,6 +35,13 @@ flutter pub get
 flutter run
 ```
 
+## Configuration files
+
+- `backend/src/main/resources/application.yml` – backend server port, context path, datasource URL, MySQL credentials, JWT settings, and file storage provider.
+- `admin-panel/src/app/core/app-config.ts` – admin frontend API base URL and auth key names.
+- `mobile-app/lib/core/app_config.dart` – mobile app backend base URL, auth token key, and Dio timeout settings.
+- `database/schema.sql` – MySQL schema and seed table definitions for the `exam_prep` database.
+
 ## Default API
 
 - Base URL: `http://localhost:8080/api`
