@@ -56,3 +56,10 @@ CREATE DATABASE exam_prep CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 Then run `database/schema.sql` or let Hibernate validate after importing the schema.
+
+
+## Development Deplyement Details : 
+MySql : https://www.freesqldatabase.com/account/ (User : sportsact7@gmail.com / Pass : Krish)
+UpTime Bot : https://dashboard.uptimerobot.com/monitors (to refresh to makeserver alive)
+Angular: https://render.com/
+Spring boot : https://render.com/

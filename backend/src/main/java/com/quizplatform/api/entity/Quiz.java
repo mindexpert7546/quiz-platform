@@ -60,21 +60,106 @@ public class Quiz extends BaseEntity {
     private PublishStatus status = PublishStatus.DRAFT;
 
     @ManyToMany
-    @JoinTable(name = "quiz_questions",
-            joinColumns = @JoinColumn(name = "quiz_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id"))
+    @JoinTable(name = "quiz_questions", joinColumns = @JoinColumn(name = "quiz_id"), inverseJoinColumns = @JoinColumn(name = "question_id"))
     private Set<Question> questions = new LinkedHashSet<>();
 
-    public void setExam(Exam exam) { this.exam = exam; }
-    public void setSubject(Subject subject) { this.subject = subject; }
-    public void setTopic(Topic topic) { this.topic = topic; }
-    public void setName(String name) { this.name = name; }
-    public void setSetName(String setName) { this.setName = setName; }
-    public void setSetNumber(Integer setNumber) { this.setNumber = setNumber; }
-    public void setDurationMinutes(int durationMinutes) { this.durationMinutes = durationMinutes; }
-    public void setOptionCount(Integer optionCount) { this.optionCount = optionCount == null ? 4 : optionCount; }
-    public void setTotalMarks(BigDecimal totalMarks) { this.totalMarks = totalMarks; }
-    public void setPassingMarks(BigDecimal passingMarks) { this.passingMarks = passingMarks; }
-    public void setAccessType(AccessType accessType) { this.accessType = accessType == null ? AccessType.FREE : accessType; }
-    public void setQuestions(Set<Question> questions) { this.questions = questions; }
+    public void setExam(Exam exam) {
+        this.exam = exam;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSetName(String setName) {
+        this.setName = setName;
+    }
+
+    public void setSetNumber(Integer setNumber) {
+        this.setNumber = setNumber;
+    }
+
+    public void setDurationMinutes(int durationMinutes) {
+        this.durationMinutes = durationMinutes;
+    }
+
+    public void setOptionCount(Integer optionCount) {
+        this.optionCount = optionCount == null ? 4 : optionCount;
+    }
+
+    public void setTotalMarks(BigDecimal totalMarks) {
+        this.totalMarks = totalMarks;
+    }
+
+    public void setPassingMarks(BigDecimal passingMarks) {
+        this.passingMarks = passingMarks;
+    }
+
+    public void setAccessType(AccessType accessType) {
+        this.accessType = accessType == null ? AccessType.FREE : accessType;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
+    public Exam getExam() {
+        return exam;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSetName() {
+        return setName;
+    }
+
+    public Integer getSetNumber() {
+        return setNumber;
+    }
+
+    public int getDurationMinutes() {
+        return durationMinutes;
+    }
+
+    public int getOptionCount() {
+        return optionCount;
+    }
+
+    public BigDecimal getTotalMarks() {
+        return totalMarks;
+    }
+
+    public BigDecimal getPassingMarks() {
+        return passingMarks;
+    }
+
+    public AccessType getAccessType() {
+        return accessType;
+    }
+
+    public PublishStatus getStatus() {
+        return status;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
 }

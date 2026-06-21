@@ -45,4 +45,28 @@ public class Exam extends BaseEntity {
     public void setBannerUrl(String bannerUrl) {
         this.bannerUrl = bannerUrl;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public String getBannerUrl() {
+        return bannerUrl;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }
