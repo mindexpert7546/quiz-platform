@@ -209,6 +209,12 @@ flutter devices
 Run app:
 
 ```powershell
+flutter clean
+flutter pub get
+flutter run
+```
+
+```powershell
 flutter run
 ```
 
