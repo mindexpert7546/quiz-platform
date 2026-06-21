@@ -1,0 +1,12 @@
+    <section class="page-head">
+      <h1>Notifications</h1>
+      <button mat-flat-button color="primary"><mat-icon>send</mat-icon> Send</button>
+    </section>
+    <section class="kanban">
+      <article *ngFor="let item of notifications" class="work-card">
+        <span>{{ item.target }}</span>
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.message }}</p>
+        <div class="status-row"><b>{{ item.status }}</b><button mat-icon-button><mat-icon>campaign</mat-icon></button></div>
+      </article>
+    </section>

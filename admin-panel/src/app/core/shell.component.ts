@@ -27,42 +27,7 @@ const nav = [
   selector: 'app-shell',
   standalone: true,
   imports: [NgFor, RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, MatListModule, MatSidenavModule, MatToolbarModule],
-  template: `
-    <mat-sidenav-container class="shell">
-      <mat-sidenav #drawer mode="side" opened class="nav">
-        <div class="brand">
-          <mat-icon>school</mat-icon>
-          <span>ExamOps</span>
-        </div>
-        <nav>
-          <a mat-list-item *ngFor="let item of nav" [routerLink]="item.path" routerLinkActive="active">
-            <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
-            <span matListItemTitle>{{ item.label }}</span>
-          </a>
-        </nav>
-      </mat-sidenav>
-      <mat-sidenav-content>
-        <mat-toolbar class="topbar">
-          <button mat-icon-button class="menu-toggle" aria-label="Toggle navigation" (click)="drawer.toggle()">
-            <mat-icon>menu</mat-icon>
-          </button>
-          <div>
-            <strong>Exam Preparation Platform</strong>
-            <small>{{ profile?.role || 'Admin' }}</small>
-          </div>
-          <span class="spacer"></span>
-          <button mat-icon-button aria-label="Notifications"><mat-icon>notifications</mat-icon></button>
-          <button mat-stroked-button type="button" (click)="logout()">
-            <mat-icon>logout</mat-icon>
-            Logout
-          </button>
-        </mat-toolbar>
-        <main>
-          <router-outlet />
-        </main>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-  `
+  templateUrl: './shell.component.html'
 })
 export class ShellComponent {
   private readonly auth = inject(AuthService);

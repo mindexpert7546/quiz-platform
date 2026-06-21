@@ -7,17 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
   selector: 'app-settings',
   standalone: true,
   imports: [ReactiveFormsModule, MatInputModule, MatSlideToggleModule],
-  template: `
-    <section class="page-head"><h1>Settings</h1></section>
-    <form class="form-grid" [formGroup]="form">
-      <mat-form-field><mat-label>Application Name</mat-label><input matInput formControlName="appName"></mat-form-field>
-      <mat-form-field><mat-label>Contact Email</mat-label><input matInput formControlName="email"></mat-form-field>
-      <mat-form-field><mat-label>SMTP Host</mat-label><input matInput formControlName="smtpHost"></mat-form-field>
-      <mat-form-field><mat-label>Razorpay Key</mat-label><input matInput formControlName="razorpayKey"></mat-form-field>
-      <mat-slide-toggle formControlName="emailVerification">Email Verification</mat-slide-toggle>
-      <mat-slide-toggle formControlName="maintenance">Maintenance Mode</mat-slide-toggle>
-    </form>
-  `
+  templateUrl: './settings.component.html'
 })
 export class SettingsComponent {
   form = new FormBuilder().nonNullable.group({

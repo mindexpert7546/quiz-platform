@@ -1,0 +1,35 @@
+    <section class="login-page">
+      <div class="login-panel">
+        <div class="login-brand">
+          <mat-icon>school</mat-icon>
+          <span>ExamOps</span>
+        </div>
+        <h1>Admin Login</h1>
+        <p>Use the default Super Admin account on first run.</p>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" autocomplete="email">
+            <mat-icon matSuffix>mail</mat-icon>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" autocomplete="current-password">
+            <mat-icon matSuffix>lock</mat-icon>
+          </mat-form-field>
+
+          <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || loading">
+            <mat-icon>login</mat-icon>
+            Login
+          </button>
+          <p class="error" *ngIf="error">{{ error }}</p>
+        </form>
+
+        <div class="default-login">
+          <span>Default Super Admin</span>
+          <code>admin@example.com / Admin&#64;12345</code>
+        </div>
+      </div>
+    </section>

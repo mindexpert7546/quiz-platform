@@ -1,0 +1,27 @@
+    <section class="page-head">
+      <div>
+        <h1>Quiz and Mock Tests</h1>
+        <p>Create new quizzes and review existing mock tests.</p>
+      </div>
+      <button mat-flat-button color="primary" type="button" (click)="showCreateForm = !showCreateForm"><mat-icon>{{ showCreateForm ? 'close' : 'add' }}</mat-icon> {{ showCreateForm ? 'Cancel' : 'Create' }}</button>
+    </section>
+    <div *ngIf="showCreateForm" class="form-shell">
+      <form [formGroup]="quizForm" (ngSubmit)="saveQuiz()" class="form-grid">
+        <mat-form-field><mat-label>Quiz Name</mat-label><input matInput formControlName="name"></mat-form-field>
+        <mat-form-field><mat-label>Exam</mat-label><input matInput formControlName="exam"></mat-form-field>
+        <mat-form-field><mat-label>Subject</mat-label><input matInput formControlName="subject"></mat-form-field>
+        <mat-form-field><mat-label>Topic</mat-label><input matInput formControlName="topic"></mat-form-field>
+        <mat-form-field><mat-label>Duration</mat-label><input matInput type="number" formControlName="duration"></mat-form-field>
+        <mat-form-field><mat-label>Questions</mat-label><input matInput type="number" formControlName="questions"></mat-form-field>
+        <button mat-flat-button color="primary" type="submit">Save Quiz</button>
+      </form>
+    </div>
+    <section class="kanban">
+      <article *ngFor="let item of items" class="work-card">
+        <span>{{ item.type }} / {{ item.set }}</span>
+        <h2>{{ item.name }}</h2>
+        <p>{{ item.exam }} - {{ item.subject }} - {{ item.topic }}</p>
+        <p>{{ item.duration }} min - {{ item.access }} - {{ item.questions }} questions - {{ item.optionCount }} options</p>
+        <div class="status-row"><b>{{ item.status }}</b><button mat-icon-button><mat-icon>publish</mat-icon></button></div>
+      </article>
+    </section>

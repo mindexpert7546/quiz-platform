@@ -1,0 +1,10 @@
+    <section class="page-head">
+      <h1>Study Materials</h1>
+      <button mat-flat-button color="primary"><mat-icon>upload_file</mat-icon> Upload</button>
+    </section>
+    <div class="table-shell">
+      <table>
+        <tr><th>Title</th><th>Exam</th><th>Subject</th><th>Topic</th><th>Type</th><th>Status</th></tr>
+        <tr *ngFor="let item of materials"><td>{{ item.title }}</td><td>{{ item.exam }}</td><td>{{ item.subject }}</td><td>{{ item.topic }}</td><td>{{ item.type }}</td><td>{{ item.status }}</td></tr>
+      </table>
+    </div>

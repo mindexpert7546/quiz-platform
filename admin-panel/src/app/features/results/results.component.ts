@@ -7,26 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-results',
   standalone: true,
   imports: [NgFor, MatButtonModule, MatIconModule],
-  template: `
-    <section class="page-head">
-      <h1>Results and Analytics</h1>
-      <div class="action-row">
-        <button mat-stroked-button><mat-icon>table_view</mat-icon> Excel</button>
-        <button mat-stroked-button><mat-icon>picture_as_pdf</mat-icon> PDF</button>
-      </div>
-    </section>
-    <section class="metric-grid">
-      <article class="metric-card"><span>Average Score</span><strong>68%</strong></article>
-      <article class="metric-card"><span>Attempts Today</span><strong>142</strong></article>
-      <article class="metric-card"><span>Pass Rate</span><strong>74%</strong></article>
-    </section>
-    <div class="table-shell">
-      <table>
-        <tr><th>Rank</th><th>Student</th><th>Exam</th><th>Quiz</th><th>Score</th></tr>
-        <tr *ngFor="let row of rows"><td>{{ row.rank }}</td><td>{{ row.student }}</td><td>{{ row.exam }}</td><td>{{ row.quiz }}</td><td>{{ row.score }}</td></tr>
-      </table>
-    </div>
-  `
+  templateUrl: './results.component.html'
 })
 export class ResultsComponent {
   rows = [

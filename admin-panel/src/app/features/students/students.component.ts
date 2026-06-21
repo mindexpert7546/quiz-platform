@@ -6,17 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-students',
   standalone: true,
   imports: [NgFor, MatIconModule],
-  template: `
-    <section class="page-head"><h1>Students</h1></section>
-    <div class="table-shell">
-      <table>
-        <tr><th>Name</th><th>Email</th><th>Subscription</th><th>Attempts</th><th>Status</th></tr>
-        <tr *ngFor="let student of students">
-          <td>{{ student.name }}</td><td>{{ student.email }}</td><td>{{ student.plan }}</td><td>{{ student.attempts }}</td><td>{{ student.status }}</td>
-        </tr>
-      </table>
-    </div>
-  `
+  templateUrl: './students.component.html'
 })
 export class StudentsComponent {
   students = [
